@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Zap, Bot } from "lucide-react";
-import { Logo } from "@/components/Logo";
 
 interface HeroProps {
   title: string;
@@ -26,7 +26,14 @@ export default function Hero({ title, description }: HeroProps) {
 
           {/* Brand logo + headline */}
           <div className="flex items-center justify-center gap-3 mb-6 animate-slide-up">
-            <Logo size={40} variant="default" />
+            <Image
+              src="/logo.jpg"
+              alt="Sofaine Robot logo"
+              width={48}
+              height={48}
+              className="animate-pulse ring-2 ring-cyan-500 rounded-full shadow-[0_0_30px_rgba(6,182,212,0.8)] object-cover"
+              priority
+            />
             <span className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-emerald">
               {title}
             </span>
