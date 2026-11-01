@@ -75,3 +75,8 @@ section {
 .card-idle-glow {
   animation: rainbow-glow 4s infinite alternate;
 }
+
+/* Continuous, colorful pulsing glow used by contact social buttons. */
+.animate-rainbow {
+  animation: rainbow-glow 4s infinite alternate;
+}
