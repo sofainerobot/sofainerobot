@@ -75,8 +75,8 @@ export default function Contact({
                 >
                   <Icon className="w-6 h-6" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-white truncate">
+                <div className="flex-1">
+                  <p className="font-semibold text-white">
                     {link.platform}
                   </p>
                 </div>
