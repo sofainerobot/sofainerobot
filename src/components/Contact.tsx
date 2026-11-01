@@ -64,7 +64,7 @@ export default function Contact({
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card flex items-center gap-4 p-4 group hover:translate-y-[-4px] transition-transform"
+                className="card flex items-center gap-4 p-4 group hover:-translate-y-2 hover:scale-[1.02] transition-transform duration-300"
               >
                 <div
                   className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
@@ -79,7 +79,6 @@ export default function Contact({
                   <p className="font-semibold text-white truncate">
                     {link.platform}
                   </p>
-                  <p className="text-xs text-gray-500 truncate">{link.url}</p>
                 </div>
                 <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-neon-cyan shrink-0 transition-colors" />
               </a>
