@@ -64,7 +64,7 @@ export default function Contact({
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card flex items-center gap-4 p-4 group hover:-translate-y-2 hover:scale-[1.02] transition-transform duration-300"
+                className="card card-idle-glow flex items-center gap-4 px-6 py-4 group hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 active:border-blue-500 active:shadow-[0_0_20px_rgba(59,130,246,0.8)] active:bg-blue-500/10"
               >
                 <div
                   className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
