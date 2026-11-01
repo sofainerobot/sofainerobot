@@ -9,7 +9,6 @@ import {
   Youtube,
   X,
   Mail,
-  ArrowRight,
 } from "lucide-react";
 
 interface SocialLink {
@@ -64,10 +63,10 @@ export default function Contact({
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card card-idle-glow flex items-center gap-4 px-6 py-4 pr-4 group hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 active:border-blue-500 active:[animation:none] active:shadow-[0_0_20px_rgba(59,130,246,1)] active:bg-blue-500/20"
+                className="card card-idle-glow w-16 h-16 rounded-full flex items-center justify-center group hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 active:border-blue-500 active:[animation:none] active:shadow-[0_0_20px_rgba(59,130,246,1)] active:bg-blue-500/20"
               >
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                     link.platform === "Telegram"
                       ? "bg-neon-cyan/20 text-neon-cyan group-hover:bg-neon-cyan group-hover:text-dark-900"
                       : "bg-gray-800 text-gray-300 group-hover:bg-neon-cyan group-hover:text-white"
@@ -75,12 +74,6 @@ export default function Contact({
                 >
                   <Icon className="w-6 h-6" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-white">
-                    {link.platform}
-                  </p>
-                </div>
-                <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-neon-cyan shrink-0 transition-colors" />
               </a>
             );
           })}
