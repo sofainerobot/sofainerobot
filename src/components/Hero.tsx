@@ -28,11 +28,6 @@ export default function Hero({ title, description }: HeroProps) {
             priority
           />
 
-          {/* Name */}
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            Sofaine Robot
-          </h2>
-
           {/* Bot handle */}
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-emerald mb-6">
             @sofainerobot
