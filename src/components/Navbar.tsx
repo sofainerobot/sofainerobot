@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Bot, Lock } from "lucide-react";
-import { Logo } from "@/components/Logo";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,15 +17,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-900/80 backdrop-blur-md border-b border-gray-700">
       <div className="container">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Brand: Logo + "Sofaine Robot" prominent */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <Logo size={32} variant="default" />
-            <span className="font-bold text-xl md:text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-emerald">
-              Sofaine Robot
-            </span>
-          </Link>
-
+        <div className="flex items-center justify-end h-16 md:h-20">
           {/* Desktop menu */}
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
