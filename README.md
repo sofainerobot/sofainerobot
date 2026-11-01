@@ -40,3 +40,4 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 - Dark mode by default (deep grays + neon cyan/emerald/purple accents)
 - 100% mobile-responsive
 - Smooth hover animations on buttons and cards
+s
