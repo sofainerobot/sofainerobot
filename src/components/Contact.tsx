@@ -5,10 +5,9 @@ import {
   Send,
   Facebook,
   Instagram,
-  Smartphone,
+  Music,
   Youtube,
   X,
-  Mail,
 } from "lucide-react";
 
 interface SocialLink {
@@ -28,7 +27,7 @@ const ICONS: Record<string, React.ElementType> = {
   Send,
   Facebook,
   Instagram,
-  Tiktok: Smartphone, // lucide v0.358 has no "Tiktok" icon; use Smartphone
+  Music, // TikTok (lucide v0.358 has no dedicated TikTok icon; Music is used)
   Youtube,
   X,
 };
@@ -38,7 +37,9 @@ export default function Contact({
 }: {
   socialLinks: SocialLink[];
 }) {
-  const sorted = [...socialLinks].sort((a, b) => a.platform.localeCompare(b.platform));
+  // Guard against undefined/null socialLinks (e.g. while data is loading) to
+  // prevent a client-side exception when spreading/sorting the array.
+  const sorted = (socialLinks || []).slice().sort((a, b) => a.platform.localeCompare(b.platform));
 
   return (
     <section id="contact" className="py-20 md:py-32 px-4">
@@ -65,13 +66,7 @@ export default function Contact({
                 rel="noopener noreferrer"
                 className="card card-idle-glow w-16 h-16 rounded-full flex items-center justify-center group hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 active:border-blue-500 active:[animation:none] active:shadow-[0_0_20px_rgba(59,130,246,1)] active:bg-blue-500/20"
               >
-                <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                    link.platform === "Telegram"
-                      ? "bg-neon-cyan/20 text-neon-cyan group-hover:bg-neon-cyan group-hover:text-dark-900"
-                      : "bg-gray-800 text-gray-300 group-hover:bg-neon-cyan group-hover:text-white"
-                  }`}
-                >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors bg-gray-800 text-gray-300 group-hover:bg-neon-cyan group-hover:text-white">
                   <Icon className="w-6 h-6" />
                 </div>
               </a>

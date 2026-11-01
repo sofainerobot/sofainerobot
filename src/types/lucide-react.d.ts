@@ -31,7 +31,7 @@ declare module "lucide-react" {
   export const Settings: React.FC<LucideProps>;
   export const Shield: React.FC<LucideProps>;
   export const ShieldCheck: React.FC<LucideProps>;
-  export const Smartphone: React.FC<LucideProps>;
+  export const Music: React.FC<LucideProps>;
   export const Sparkles: React.FC<LucideProps>;
   export const Trash2: React.FC<LucideProps>;
   export const Users: React.FC<LucideProps>;

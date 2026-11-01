@@ -65,7 +65,7 @@ async function main() {
     {
       platform: "TikTok",
       url: "https://www.tiktok.com/@sofaineroboot?_r=1&_t=ZN-9ApbH6NMQC6",
-      icon: "Smartphone",
+      icon: "Music",
     },
     {
       platform: "YouTube",
