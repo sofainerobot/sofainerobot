@@ -13,15 +13,13 @@ import {
   X as Twitter,
 } from "lucide-react";
 
-interface SocialLink {
-  id?: string;
-  platform: string;
-  url: string;
-}
-
-/* Exact social links for @sofainerobot. Used as the default when no
-   socialLinks prop is supplied; a parent can still override via the prop. */
-const DEFAULT_SOCIAL_LINKS: SocialLink[] = [
+/**
+ * Hardcoded social links for @sofainerobot.
+ *
+ * No database dependency: every icon renders from this static array, so the
+ * social row never depends on an (often empty) cloud table.
+ */
+const socialLinks = [
   {
     platform: "Instagram",
     url: "https://www.instagram.com/sofainerobot?vrfl=dXF4eXIzMXc2MHJi",
@@ -32,7 +30,7 @@ const DEFAULT_SOCIAL_LINKS: SocialLink[] = [
   },
   {
     platform: "Telegram",
-    url: "https://t.me/sofainerobot",
+    url: "https://t.me/sofaineroboot",
   },
   {
     platform: "TikTok",
@@ -52,46 +50,16 @@ const DEFAULT_SOCIAL_LINKS: SocialLink[] = [
  * Contact & Social Media section ("Connect with me").
  *
  * Displays clickable, square social-icon buttons linked to the official
- * Sofaine Robot profiles. Icons are rendered via explicit conditionals (no
- * dynamic icon lookup), so a missing platform can never resolve to an
- * undefined component — the component is crash-free by design.
+ * Sofaine Robot profiles. Icons are rendered via explicit `if` conditionals
+ * inside the map (no dynamic icon lookup), so a missing platform can never
+ * resolve to an undefined component — the component is crash-free by design.
  *
  * Each button has:
  *  - Idle state: a continuous colorful pulsing glow (`animate-rainbow`).
  *  - Hover state: scales up (`hover:scale-110`).
  *  - Active/pressed state: immediate blue glow and background.
  */
-export default function Contact({
-  socialLinks,
-}: {
-  socialLinks?: SocialLink[];
-}) {
-  // Defensive default so .map never runs against undefined/null while loading.
-  const links = socialLinks ?? DEFAULT_SOCIAL_LINKS;
-
-  // Explicit icon per platform. No dynamic lookup, no undefined icons.
-  const renderIcon = (platform: string): JSX.Element | null => {
-    if (platform === "Instagram") {
-      return <Instagram className="w-6 h-6" />;
-    }
-    if (platform === "Facebook") {
-      return <Facebook className="w-6 h-6" />;
-    }
-    if (platform === "Telegram") {
-      return <Send className="w-6 h-6" />;
-    }
-    if (platform === "TikTok") {
-      return <Music className="w-6 h-6" />;
-    }
-    if (platform === "YouTube") {
-      return <Youtube className="w-6 h-6" />;
-    }
-    if (platform === "X") {
-      return <Twitter className="w-6 h-6" />;
-    }
-    return null;
-  };
-
+export default function Contact() {
   return (
     <section id="contact" className="py-20 md:py-32 px-4">
       <div className="container">
@@ -107,21 +75,32 @@ export default function Contact({
 
         {/* Social buttons row: wraps on mobile, centered, consistent gap. */}
         <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-          {links.map((link) => {
-            const href = link.url || "#";
-            const key = link.id || href;
-
-            // Only render a link when there is a real URL to avoid broken anchors.
-            if (!link.url) {
-              return null;
+          {socialLinks.map((link) => {
+            // Explicit icon per platform, rendered with `if` conditions.
+            let icon = null;
+            if (link.platform === "Instagram") {
+              icon = <Instagram className="w-6 h-6" />;
             }
-
-            const Icon = renderIcon(link.platform);
+            if (link.platform === "Facebook") {
+              icon = <Facebook className="w-6 h-6" />;
+            }
+            if (link.platform === "Telegram") {
+              icon = <Send className="w-6 h-6" />;
+            }
+            if (link.platform === "TikTok") {
+              icon = <Music className="w-6 h-6" />;
+            }
+            if (link.platform === "YouTube") {
+              icon = <Youtube className="w-6 h-6" />;
+            }
+            if (link.platform === "X") {
+              icon = <Twitter className="w-6 h-6" />;
+            }
 
             return (
               <a
-                key={key}
-                href={href}
+                key={link.url}
+                href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="
@@ -144,7 +123,7 @@ export default function Contact({
                   duration-200
                 "
               >
-                {Icon}
+                {icon}
               </a>
             );
           })}

@@ -6,7 +6,7 @@ import About from "@/components/About";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import { getHeroSettings, getFAQs, getSocialLinks } from "@/lib/db";
+import { getHeroSettings, getFAQs } from "@/lib/db";
 
 /**
  * Main landing page (Server Component).
@@ -15,11 +15,7 @@ import { getHeroSettings, getFAQs, getSocialLinks } from "@/lib/db";
  * passes it down to the client sections. Everything else stays static.
  */
 export default async function Home() {
-  const [hero, faqs, socialLinks] = await Promise.all([
-    getHeroSettings(),
-    getFAQs(),
-    getSocialLinks(),
-  ]);
+  const [hero, faqs] = await Promise.all([getHeroSettings(), getFAQs()]);
 
   return (
     <main className="relative">
@@ -28,7 +24,7 @@ export default async function Home() {
       <Features />
       <About />
       <FAQ faqs={faqs} />
-      <Contact socialLinks={socialLinks} />
+      <Contact />
       <Footer />
     </main>
   );
