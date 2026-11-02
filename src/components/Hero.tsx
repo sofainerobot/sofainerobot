@@ -11,7 +11,7 @@ interface HeroProps {
 
 export default function Hero({ title, description }: HeroProps) {
   return (
-    <section className="relative overflow-hidden py-8 px-4">
+    <section className="relative overflow-hidden flex flex-col items-center justify-center min-h-[85vh] pt-20 px-4">
       <div className="absolute top-[-12%] left-[-8%] w-[60%] h-[60%] bg-cyan-400/6 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-12%] right-[-10%] w-[60%] h-[60%] bg-purple-600/6 rounded-full blur-[150px] pointer-events-none" />
 
