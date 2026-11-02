@@ -22,11 +22,11 @@ export default function Hero({ title, description }: HeroProps) {
             alt="Sofaine Robot logo"
             width={128}
             height={128}
-            className="w-32 h-32 md:w-44 md:h-44 rounded-full object-cover mx-auto mb-4 ring-4 ring-cyan-500/30 drop-shadow-[0_0_25px_rgba(34,211,238,0.5)] animate-float"
+            className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover mx-auto mb-4 ring-4 ring-cyan-500/30 drop-shadow-[0_0_25px_rgba(34,211,238,0.5)] animate-float"
             priority
           />
 
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-2 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-2 animate-fade-in">
             Sofaine Robot
           </h1>
           <p className="text-gray-400 text-sm tracking-widest uppercase mb-4 animate-fade-in" style={{ animationDelay: "0.1s" }}>
@@ -42,18 +42,18 @@ export default function Hero({ title, description }: HeroProps) {
             {description}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: "0.3s" }}>
+          <div className="flex flex-row items-center justify-center gap-4 mt-6 animate-slide-up" style={{ animationDelay: "0.3s" }}>
             <Link
               href="https://t.me/sofainerobot"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-glass flex items-center justify-center gap-2 px-8 py-3.5"
+              className="btn-glass flex items-center justify-center gap-2 px-6 py-3"
             >
               Launch <ArrowRight className="w-4 h-4" />
             </Link>
             <a
               href="#about"
-              className="btn-outline flex items-center justify-center gap-2 px-8 py-3.5"
+              className="btn-outline flex items-center justify-center gap-2 px-6 py-3"
             >
               <Zap className="w-4 h-4" /> About
             </a>
