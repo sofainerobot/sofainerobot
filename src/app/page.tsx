@@ -1,8 +1,8 @@
 export const dynamic = 'force-dynamic';
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import HowItWorks from "@/components/HowItWorks";
 import Features from "@/components/Features";
+import HowItWorks from "@/components/HowItWorks";
 import About from "@/components/About";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
@@ -22,8 +22,8 @@ export default async function Home() {
     <main className="relative">
       <Navbar />
       <Hero title={hero.title} description={hero.description} />
-      <div className="-mt-10"><HowItWorks /></div>
       <Features />
+      <HowItWorks />
       <About />
       <FAQ faqs={faqs} />
       <Contact />

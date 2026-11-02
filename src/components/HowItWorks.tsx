@@ -54,7 +54,7 @@ const stepColors: Record<string, { bg: string; text: string; glow: string }> = {
 
 export default function HowItWorks() {
   return (
-    <section className="relative overflow-hidden py-16 px-4 bg-[#0a0a0a]">
+    <section className="relative overflow-hidden pt-6 pb-16 px-4 bg-[#0a0a0a]">
       {/* Cyan/purple glow decorations */}
       <div className="absolute top-[-12%] left-[-10%] w-[60%] h-[60%] bg-cyan-500/6 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-12%] right-[-10%] w-[60%] h-[60%] bg-purple-600/6 rounded-full blur-[150px] pointer-events-none" />
