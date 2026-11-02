@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, ArrowDown, Zap } from "lucide-react";
 import Stats from "./Stats";
 
 interface HeroProps {
@@ -12,7 +12,7 @@ interface HeroProps {
 
 export default function Hero({ title, description }: HeroProps) {
   return (
-    <section className="relative overflow-hidden flex flex-col items-center justify-center min-h-[85vh] pt-20 px-4">
+    <section className="relative overflow-hidden flex flex-col items-center h-auto pb-8 px-4">
       <div className="absolute top-[-12%] left-[-8%] w-[60%] h-[60%] bg-cyan-400/6 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-12%] right-[-10%] w-[60%] h-[60%] bg-purple-600/6 rounded-full blur-[150px] pointer-events-none" />
 
@@ -62,6 +62,14 @@ export default function Hero({ title, description }: HeroProps) {
 
           {/* Trust stats bar sitting right below the Hero buttons */}
           <Stats />
+
+          {/* Elegant tech stack row */}
+          <div className="w-full text-center text-xs text-gray-500 mt-4 uppercase tracking-wider">
+            Powered by Next.js, Telegram &amp; Prisma
+          </div>
+
+          {/* Subtle animated scroll arrow */}
+          <ArrowDown className="animate-bounce mx-auto text-cyan-500 mt-4 mb-2 block" />
         </div>
       </div>
     </section>

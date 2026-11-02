@@ -9,6 +9,7 @@ declare module "lucide-react" {
 
   // Icons used across the Sofaine Robot site & admin panel
   export const ArrowRight: React.FC<LucideProps>;
+  export const ArrowDown: React.FC<LucideProps>;
   export const ArrowUp: React.FC<LucideProps>;
   export const Bot: React.FC<LucideProps>;
   export const Brain: React.FC<LucideProps>;
