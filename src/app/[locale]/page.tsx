@@ -10,6 +10,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { getHeroSettings, getFAQs } from "@/lib/db";
 import { Locale } from "@/i18n";
+import { setRequestLocale } from "next-intl/server";
 
 /**
  * Main landing page (Server Component).
@@ -18,12 +19,13 @@ import { Locale } from "@/i18n";
  * client sections. All static UI text is rendered by the client components
  * using the `useTranslations` hook from next-intl.
  */
-export default async function Home({
+export default async function Page({
   params,
 }: {
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const [hero, faqs] = await Promise.all([getHeroSettings(), getFAQs()]);
 
   return (

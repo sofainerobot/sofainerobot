@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
 import "./globals.css";
 
 import { Locale } from "@/i18n";
@@ -28,13 +29,14 @@ export const metadata: Metadata = {
  * `dir` on <html> (rtl for Arabic).
  */
 export default async function LocaleLayout({
-  params,
   children,
+  params,
 }: {
   params: Promise<{ locale: Locale }>;
   children: React.ReactNode;
 }) {
   const { locale } = await params;
+  setRequestLocale(locale);
 
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className="dark">
