@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import HowItWorks from "@/components/HowItWorks";
 import Features from "@/components/Features";
 import About from "@/components/About";
 import FAQ from "@/components/FAQ";
@@ -21,6 +22,7 @@ export default async function Home() {
     <main className="relative">
       <Navbar />
       <Hero title={hero.title} description={hero.description} />
+      <HowItWorks />
       <Features />
       <About />
       <FAQ faqs={faqs} />

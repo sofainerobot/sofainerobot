@@ -12,7 +12,7 @@ interface HeroProps {
 
 export default function Hero({ title, description }: HeroProps) {
   return (
-    <section className="relative overflow-hidden flex flex-col items-center h-auto pb-8 px-4">
+    <section className="relative overflow-hidden flex flex-col items-center px-4 py-12">
       <div className="absolute top-[-12%] left-[-8%] w-[60%] h-[60%] bg-cyan-400/6 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-12%] right-[-10%] w-[60%] h-[60%] bg-purple-600/6 rounded-full blur-[150px] pointer-events-none" />
 
