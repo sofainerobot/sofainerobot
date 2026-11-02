@@ -12,7 +12,7 @@ interface HeroProps {
 
 export default function Hero({ title, description }: HeroProps) {
   return (
-    <section className="relative overflow-hidden flex flex-col items-center px-4 py-12">
+    <section className="relative overflow-hidden flex flex-col items-center justify-center min-h-[80vh] px-4 py-6">
       <div className="absolute top-[-12%] left-[-8%] w-[60%] h-[60%] bg-cyan-400/6 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-[-12%] right-[-10%] w-[60%] h-[60%] bg-purple-600/6 rounded-full blur-[150px] pointer-events-none" />
 
@@ -27,23 +27,23 @@ export default function Hero({ title, description }: HeroProps) {
             priority
           />
 
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-2 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-1 animate-fade-in">
             Sofaine Robot
           </h1>
-          <p className="text-gray-400 text-sm tracking-widest uppercase mb-4 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <p className="text-gray-400 text-sm tracking-widest uppercase mb-2 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             @sofainerobot — on Telegram
           </p>
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold mb-4 animate-fade-in" style={{ animationDelay: "0.15s" }}>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold mb-2 animate-fade-in" style={{ animationDelay: "0.15s" }}>
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             Online on Telegram
           </div>
 
-          <p className="text-gray-300 text-lg md:text-xl mb-4 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
+          <p className="text-gray-300 text-lg md:text-xl mb-2 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
             {description}
           </p>
 
-          <div className="flex flex-row items-center justify-center gap-4 mt-6 animate-slide-up" style={{ animationDelay: "0.3s" }}>
+          <div className="flex flex-row items-center justify-center gap-3 mt-3 animate-slide-up" style={{ animationDelay: "0.3s" }}>
             <Link
               href="https://t.me/sofainerobot"
               target="_blank"
@@ -64,12 +64,12 @@ export default function Hero({ title, description }: HeroProps) {
           <Stats />
 
           {/* Elegant tech stack row */}
-          <div className="w-full text-center text-xs text-gray-500 mt-4 uppercase tracking-wider">
+          <div className="w-full text-center text-xs text-gray-500 mt-2 uppercase tracking-wider">
             Powered by Next.js, Telegram &amp; Prisma
           </div>
 
           {/* Subtle animated scroll arrow */}
-          <ArrowDown className="animate-bounce mx-auto text-cyan-500 mt-4 mb-2 block" />
+          <ArrowDown className="animate-bounce mx-auto text-cyan-500 mt-2 mb-1 block" />
         </div>
       </div>
     </section>

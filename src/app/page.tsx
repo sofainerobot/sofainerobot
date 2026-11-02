@@ -22,7 +22,7 @@ export default async function Home() {
     <main className="relative">
       <Navbar />
       <Hero title={hero.title} description={hero.description} />
-      <HowItWorks />
+      <div className="-mt-10"><HowItWorks /></div>
       <Features />
       <About />
       <FAQ faqs={faqs} />
