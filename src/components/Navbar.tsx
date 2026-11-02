@@ -41,13 +41,13 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="btn-primary hidden sm:inline-flex items-center gap-2"
             >
-              Start Bot <Bot className="w-4 h-4" />
+              {t('startBot')} <Bot className="w-4 h-4" />
             </a>
             <Link
               href={`/${locale}/admin/login`}
               className="text-xs font-medium text-gray-400 hover:text-white underline underline-offset-4 transition-colors"
             >
-              Admin <Lock className="w-3 h-3 ml-1" />
+              {t('admin')} <Lock className="w-3 h-3 ml-1" />
             </Link>
             <LanguageSelector />
           </div>
