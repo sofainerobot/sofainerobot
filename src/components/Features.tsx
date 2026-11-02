@@ -63,9 +63,9 @@ export default function Features() {
   }, []);
 
   return (
-    <section id="features" className="reveal py-20 md:py-32 px-4 relative">
+    <section id="features" className="reveal py-12 md:py-16 px-4 relative">
       <div className="container">
-        <div className="text-center mb-20">
+        <div className="text-center mb-10">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-white mb-6">
             Why Choose{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">

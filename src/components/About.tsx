@@ -63,7 +63,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-20 md:py-32 px-4 bg-dark-800/30">
+    <section id="about" className="py-12 md:py-16 px-4 bg-dark-800/30">
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text side */}
