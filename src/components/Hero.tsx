@@ -32,18 +32,18 @@ export default function Hero({ title, description }: HeroProps) {
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-2 animate-fade-in">
             Sofaine Robot
           </h1>
-          <p className="text-gray-400 text-sm tracking-widest uppercase mb-10 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <p className="text-gray-400 text-sm tracking-widest uppercase mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             @sofainerobot — on Telegram
           </p>
 
           {/* Status pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold mb-12 animate-fade-in" style={{ animationDelay: "0.15s" }}>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold mb-8 animate-fade-in" style={{ animationDelay: "0.15s" }}>
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             Online on Telegram
           </div>
 
           {/* Sub-description */}
-          <p className="text-gray-300 text-lg md:text-xl mb-14 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
+          <p className="text-gray-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
             {description}
           </p>
 
