@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ArrowDown, Zap } from "lucide-react";
-import Stats from "./Stats";
 import { useTranslations } from "next-intl";
 
 interface HeroProps {
@@ -61,9 +60,6 @@ export default function Hero({ description }: HeroProps) {
               <Zap className="w-4 h-4" /> {t("about")}
             </a>
           </div>
-
-          {/* Trust stats bar sitting right below the Hero buttons */}
-          <Stats />
 
           {/* Elegant tech stack row */}
           <div className="w-full text-center text-xs text-gray-500 mt-2 uppercase tracking-wider">
