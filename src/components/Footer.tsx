@@ -1,7 +1,11 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Bot, Mail } from "lucide-react";
 
 export default function Footer() {
+  const t = useTranslations("footer");
+  const year = new Date().getFullYear();
+
   return (
     <footer className="border-t border-gray-800 bg-dark-900 pt-16 pb-8 px-4">
       <div className="container">
@@ -11,7 +15,7 @@ export default function Footer() {
             <div className="w-7 h-7 bg-neon-cyan rounded flex items-center justify-center">
               <Bot className="w-4 h-4 text-dark-900" />
             </div>
-            <span className="font-bold text-lg tracking-tight">Sofaine Robot</span>
+            <span className="font-bold text-lg tracking-tight">{t("brand")}</span>
           </div>
 
           {/* Quick links */}
@@ -23,17 +27,15 @@ export default function Footer() {
               className="flex items-center gap-2 hover:text-white transition-colors"
             >
               <Bot className="w-4 h-4" />
-              Open @sofainerobot
+              {t("openBot")}
             </a>
             <span>·</span>
-            <span>Made with ❤️ for Telegram</span>
+            <span>{t("madeWith")}</span>
           </div>
         </div>
 
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-          <p>
-            &copy; {new Date().getFullYear()} Sofaine Robot. All rights reserved.
-          </p>
+          <p>{t("copyright", { year })}</p>
           <div className="flex gap-4">
             <a
               href="https://t.me/sofainerobot"
@@ -41,15 +43,15 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="hover:text-gray-300 transition-colors"
             >
-              Telegram Bot
+              {t("telegramBot")}
             </a>
             <span>·</span>
             <a href="#" className="hover:text-gray-300 transition-colors">
-              Privacy
+              {t("privacy")}
             </a>
             <span>·</span>
             <a href="#" className="hover:text-gray-300 transition-colors">
-              Terms
+              {t("terms")}
             </a>
           </div>
         </div>

@@ -1,4 +1,5 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -8,20 +9,27 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { getHeroSettings, getFAQs } from "@/lib/db";
+import { Locale } from "@/i18n";
 
 /**
  * Main landing page (Server Component).
  *
- * Fetches dynamic content (Hero, FAQ, Contact) from the cloud database and
- * passes it down to the client sections. Everything else stays static.
+ * Fetches dynamic content (Hero, FAQ) from the database and passes it to the
+ * client sections. All static UI text is rendered by the client components
+ * using the `useTranslations` hook from next-intl.
  */
-export default async function Home() {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
   const [hero, faqs] = await Promise.all([getHeroSettings(), getFAQs()]);
 
   return (
     <main className="relative">
       <Navbar />
-      <Hero title={hero.title} description={hero.description} />
+      <Hero description={hero.description} />
       <Features />
       <HowItWorks />
       <About />

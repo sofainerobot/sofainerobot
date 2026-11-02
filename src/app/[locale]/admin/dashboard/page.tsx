@@ -17,9 +17,10 @@ import AdminDashboard from "@/components/admin/Dashboard";
 export default async function AdminDashboardPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_session")?.value;
+  const locale = cookieStore.get("NEXT_LOCALE")?.value ?? "en";
 
   if (token !== getExpectedToken()) {
-    redirect("/admin/login");
+    redirect(`/${locale}/admin/login`);
   }
 
   const [hero, faqs, socialLinks] = await Promise.all([

@@ -25,6 +25,30 @@ import {
   updateSocialLink,
 } from "@/lib/db";
 import type { FAQItem, SocialLink } from "@/lib/db";
+import { cookies } from "next/headers";
+
+/**
+ * Locale-aware path helpers.
+ *
+ * After restructuring, admin routes live under `[locale]`
+ * (e.g. `/en/admin/dashboard`), so every admin redirect / revalidation must
+ * include the current locale. The locale is read from the next-intl
+ * `NEXT_LOCALE` cookie.
+ *
+ * Note: `cookies()` returns a Promise in Next.js 15, so `getLocale` is async.
+ */
+async function getLocale(): Promise<string> {
+  const cookieStore = await cookies();
+  return cookieStore.get("NEXT_LOCALE")?.value ?? "en";
+}
+
+async function adminPath(path: string): Promise<string> {
+  return `/${await getLocale()}/admin${path}`;
+}
+
+async function rootPath(): Promise<string> {
+  return `/${await getLocale()}/`;
+}
 
 /* ------------------------------------------------------------------ */
 /* Authentication                                                     */
@@ -39,18 +63,18 @@ export async function adminLogin(formData: FormData): Promise<void> {
   const password = String(formData.get("password") ?? "");
 
   if (!isValidPassword(password)) {
-    redirect("/admin/login?error=invalid");
+    redirect(await adminPath("/login?error=invalid"));
   }
 
   await setSessionToken(getExpectedToken());
-  revalidatePath("/admin/dashboard");
-  redirect("/admin/dashboard");
+  revalidatePath(await adminPath("/dashboard"));
+  redirect(await adminPath("/dashboard"));
 }
 
 /** Admin logout. Clears the session cookie and redirects to login. */
 export async function adminLogout(): Promise<never> {
   await clearSessionToken();
-  redirect("/admin/login");
+  redirect(await adminPath("/login"));
 }
 
 /**
@@ -95,8 +119,8 @@ export async function updateHeroSettings(
   }
 
   await dbUpdateHeroSettings({ title, description });
-  revalidatePath("/");
-  revalidatePath("/admin/dashboard");
+  revalidatePath(await rootPath());
+  revalidatePath(await adminPath("/dashboard"));
   return { success: true };
 }
 
@@ -127,8 +151,8 @@ export async function upsertFaq(
     await createFAQ({ question, answer, order });
   }
 
-  revalidatePath("/");
-  revalidatePath("/admin/dashboard");
+  revalidatePath(await rootPath());
+  revalidatePath(await adminPath("/dashboard"));
   return { success: true };
 }
 
@@ -147,8 +171,8 @@ export async function deleteFaq(
 
   await deleteFAQ({ id });
 
-  revalidatePath("/");
-  revalidatePath("/admin/dashboard");
+  revalidatePath(await rootPath());
+  revalidatePath(await adminPath("/dashboard"));
   return { success: true };
 }
 
@@ -179,8 +203,8 @@ export async function upsertSocialLink(
     await createSocialLink({ platform, url, icon });
   }
 
-  revalidatePath("/");
-  revalidatePath("/admin/dashboard");
+  revalidatePath(await rootPath());
+  revalidatePath(await adminPath("/dashboard"));
   return { success: true };
 }
 
@@ -199,8 +223,8 @@ export async function deleteSocialLink(
 
   await dbDeleteSocialLink({ id });
 
-  revalidatePath("/");
-  revalidatePath("/admin/dashboard");
+  revalidatePath(await rootPath());
+  revalidatePath(await adminPath("/dashboard"));
   return { success: true };
 }
 

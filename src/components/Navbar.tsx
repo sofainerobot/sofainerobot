@@ -3,15 +3,21 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Bot, Lock } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import LanguageSelector from "./LanguageSelector";
 
 export default function Navbar() {
+  const t = useTranslations("navbar");
+  // `useLocale` is provided by `NextIntlClientProvider` in the [locale] layout.
+  const locale = useLocale() || "en";
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "#about" },
-    { name: "FAQ", href: "#faq" },
-    { name: "Contact", href: "#contact" },
+    { name: t("home"), href: `/${locale}` },
+    { name: t("about"), href: "#about" },
+    { name: t("faq"), href: "#faq" },
+    { name: t("contact"), href: "#contact" },
   ];
 
   return (
@@ -38,11 +44,12 @@ export default function Navbar() {
               Start Bot <Bot className="w-4 h-4" />
             </a>
             <Link
-              href="/admin/login"
+              href={`/${locale}/admin/login`}
               className="text-xs font-medium text-gray-400 hover:text-white underline underline-offset-4 transition-colors"
             >
               Admin <Lock className="w-3 h-3 ml-1" />
             </Link>
+            <LanguageSelector />
           </div>
 
           {/* Mobile hamburger */}

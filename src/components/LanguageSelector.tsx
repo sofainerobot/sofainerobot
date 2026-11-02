@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { Globe, ChevronDown, Search } from "lucide-react";
+import { locales } from "@/i18n";
 
 interface Language {
   code: string;
@@ -41,7 +44,7 @@ const LANGUAGES: Language[] = [
   { code: "sv", name: "Swedish", flag: "🇸🇪" },
   { code: "no", name: "Norwegian", flag: "🇳🇴" },
   { code: "da", name: "Danish", flag: "🇩🇰" },
-  { code: "fi", name: "Finnish", flag: "🇫🇮" },
+  { code: "fi", name: "Finnish", flag: "🇮🇳" },
   { code: "cs", name: "Czech", flag: "🇨🇿" },
   { code: "hu", name: "Hungarian", flag: "🇭🇺" },
   { code: "ro", name: "Romanian", flag: "🇷🇴" },
@@ -49,9 +52,16 @@ const LANGUAGES: Language[] = [
 ] as const;
 
 export default function LanguageSelector() {
+  const t = useTranslations("common");
+  const router = useRouter();
+  // Current locale provided by NextIntlClientProvider in the [locale] layout.
+  const currentLocale = useLocale() || "en";
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>(LANGUAGES[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(
+    LANGUAGES.find((language) => language.code === currentLocale) ||
+      LANGUAGES[0]
+  );
 
   const filteredLanguages = LANGUAGES.filter(
     (language) =>
@@ -59,7 +69,13 @@ export default function LanguageSelector() {
       language.code.toLowerCase().includes(search.toLowerCase())
   );
 
+  /**
+   * Navigate to the selected locale route (e.g. `/ar` or `/fr`).
+   * The next-intl middleware + `[locale]` route render the localized page,
+   * and the NEXT_LOCALE cookie is refreshed on the next server request.
+   */
   const handleSelect = (language: Language) => {
+    router.push(`/${language.code}`);
     setSelectedLanguage(language);
     setIsOpen(false);
   };
@@ -69,7 +85,7 @@ export default function LanguageSelector() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#1a1b26] border border-white/10 text-white hover:bg-white/5 transition-all duration-300"
-        aria-label="Select language"
+        aria-label={t("language")}
         aria-expanded={isOpen}
       >
         <Globe className="w-4 h-4 text-white" />
@@ -90,7 +106,7 @@ export default function LanguageSelector() {
               />
               <input
                 type="text"
-                placeholder="Search languages"
+                placeholder={t("searchLanguages")}
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 className="w-full pl-9 pr-3 py-2 bg-transparent border-none rounded-lg text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-0"
@@ -111,7 +127,7 @@ export default function LanguageSelector() {
               ))
             ) : (
               <div className="px-4 py-3 text-sm text-white/50">
-                No languages found
+                {t("noLanguagesFound")}
               </div>
             )}
           </div>

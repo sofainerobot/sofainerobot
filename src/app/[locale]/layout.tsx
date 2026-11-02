@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
 import "./globals.css";
+
+import { Locale } from "@/i18n";
 
 // Inter font for clean, modern typography
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -17,15 +20,28 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+/**
+ * Locale layout.
+ *
+ * Wraps every locale route in `NextIntlClientProvider` so that client
+ * components can use `useTranslations` / `useLocale`. Also sets `lang` and
+ * `dir` on <html> (rtl for Arabic).
+ */
+export default async function LocaleLayout({
+  params,
   children,
 }: {
+  params: Promise<{ locale: Locale }>;
   children: React.ReactNode;
 }) {
+  const { locale } = await params;
+
   return (
-    <html lang="en" className="dark">
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+        <NextIntlClientProvider locale={locale}>
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );
