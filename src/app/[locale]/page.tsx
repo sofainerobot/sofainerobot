@@ -1,4 +1,4 @@
-import { Send, Instagram, Facebook, Youtube, Twitter, Music, Shield, Cpu, Globe } from 'lucide-react';
+import { Send, Instagram, Facebook, Youtube, Twitter, Shield, Cpu, Globe } from 'lucide-react';
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         Sofaine Robot
       </h1>
 
-      {/* 3. زر فتح الدردشة (شفاف ويصبح أزرق عند الضغط) */}
+      {/* 3. زر فتح الدردشة */}
       <div className="text-center mb-16">
         <a 
           href="https://t.me/sofainerobot" 
@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
       </div>
 
       {/* 4. الحسابات الاجتماعية */}
-      <div className="flex flex-wrap justify-center gap-5 max-w-lg mt-16 mb-12">
+      <div className="flex flex-wrap justify-center gap-5 max-w-lg mt-8 mb-12">
         <a href="https://www.instagram.com/sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-pink-500/20 hover:text-pink-400 transition-all border border-white/10">
           <Instagram className="w-6 h-6" />
         </a>
@@ -45,9 +45,14 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         <a href="https://t.me/sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-sky-500/20 hover:text-sky-400 transition-all border border-white/10">
           <Send className="w-6 h-6" />
         </a>
+        
+        {/* شعار تيك توك الحقيقي (SVG) */}
         <a href="https://www.tiktok.com/@sofaineroboot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/20 hover:text-white transition-all border border-white/10">
-          <Music className="w-6 h-6" />
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+          </svg>
         </a>
+
         <a href="https://youtube.com/@sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-red-600/20 hover:text-red-500 transition-all border border-white/10">
           <Youtube className="w-6 h-6" />
         </a>
@@ -56,21 +61,30 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         </a>
       </div>
 
-      {/* 5. بطاقة تعريف البوت */}
-      <div className="w-full max-w-lg bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center shadow-lg">
-        <h2 className="text-xl font-bold text-white mb-4">ماذا يقدم سفيان روبوت؟</h2>
-        <div className="flex flex-col gap-4 text-gray-300 text-sm">
-          <div className="flex items-center gap-3">
-            <Shield className="w-5 h-5 text-red-400 shrink-0" />
-            <p className="text-right">ثغرات Git حصرية ومحدثة باستمرار.</p>
+      {/* 5. بطاقة تعريف البوت (باللغة الإنجليزية مع شرح إضافي) */}
+      <div className="w-full max-w-lg bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-left shadow-lg">
+        <h2 className="text-xl font-bold text-white mb-6 text-center">What does Sofaine Robot offer?</h2>
+        <div className="flex flex-col gap-5 text-gray-300 text-sm">
+          <div className="flex items-start gap-4">
+            <Shield className="w-6 h-6 text-red-400 shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-white block mb-1">Exclusive Git Exploits</strong>
+              <p>Constantly updated vulnerabilities and exploits tailored for developers and security researchers.</p>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Cpu className="w-5 h-5 text-cyan-400 shrink-0" />
-            <p className="text-right">أدوات ذكاء اصطناعي (AI) متطورة.</p>
+          <div className="flex items-start gap-4">
+            <Cpu className="w-6 h-6 text-cyan-400 shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-white block mb-1">Advanced AI Tools</strong>
+              <p>Access powerful AI models and utilities designed to boost your daily workflow and productivity.</p>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Globe className="w-5 h-5 text-purple-400 shrink-0" />
-            <p className="text-right">مواقع وتطبيقات من عالم آخر.</p>
+          <div className="flex items-start gap-4">
+            <Globe className="w-6 h-6 text-purple-400 shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-white block mb-1">Dark Web & Beyond</strong>
+              <p>Explore unique websites, hidden apps, and exclusive resources from another world.</p>
+            </div>
           </div>
         </div>
       </div>
