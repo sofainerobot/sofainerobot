@@ -5,31 +5,31 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
-// 1. دالة التحقق من المسؤول
 async function checkAdmin() {
   const cookieStore = await cookies();
   const session = cookieStore.get('admin_session')?.value;
-  if (session !== process.env.ADMIN_SESSION_SECRET && session !== 'true') {
-    throw new Error('Unauthorized: You must be an admin to do this.');
+  if (!session) {
+    throw new Error('Unauthorized');
   }
 }
 
-// 2. دوال تسجيل الدخول والخروج
 export async function adminLogin(formData: FormData) {
   const password = formData.get('password') as string;
-  const adminPassword = process.env.ADMIN_PASSWORD || 'sofaine_admin_2026';
+  
+  // سيقرأ كلمة المرور من Vercel، وإذا لم يجدها سيستخدم ADMIN_PASSWORD
+  const adminPassword = process.env.ADMIN_PASSWORD || 'ADMIN_PASSWORD';
 
   if (password === adminPassword) {
     const cookieStore = await cookies();
     cookieStore.set('admin_session', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // أسبوع
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
     redirect('/admin/dashboard');
   } else {
-    return { error: 'Invalid password' };
+    return { error: 'كلمة المرور غير صحيحة' };
   }
 }
 
@@ -39,7 +39,6 @@ export async function adminLogout() {
   redirect('/admin/login');
 }
 
-// 3. دوال إعدادات الصفحة الرئيسية (Hero)
 export async function updateHeroSettings(data: { title: string; description: string }) {
   await checkAdmin();
   const existing = await prisma.heroSettings.findFirst();
@@ -51,7 +50,6 @@ export async function updateHeroSettings(data: { title: string; description: str
   revalidatePath('/[locale]', 'layout');
 }
 
-// 4. دوال الأسئلة الشائعة (FAQ)
 export async function upsertFaq(data: { id?: number; question: string; answer: string; order?: number }) {
   await checkAdmin();
   if (data.id) {
@@ -68,7 +66,6 @@ export async function deleteFaq(id: number) {
   revalidatePath('/[locale]', 'layout');
 }
 
-// 5. دوال روابط التواصل الاجتماعي (Social Links)
 export async function upsertSocialLink(data: { id?: string; platform: string; url: string; icon: string }) {
   await checkAdmin();
   if (data.id) {
