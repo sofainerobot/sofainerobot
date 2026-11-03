@@ -8,8 +8,8 @@ export async function adminLogin(formData: FormData) {
   const password = formData.get('password') as string;
   const locale = formData.get('locale') as string || 'en';
   
-  // قبول كلمة المرور كما طلبت
-  if (password === 'ADMIN_PASSWORD' || password === 'Sofaine_Admin_2026!') {
+  // كلمة المرور التي طلبتها
+  if (password === 'ADMIN_PASSWORD') {
     const cookieStore = await cookies();
     cookieStore.set('admin_session', 'true', { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 604800, path: '/' });
     redirect(`/${locale}/admin/dashboard`);
