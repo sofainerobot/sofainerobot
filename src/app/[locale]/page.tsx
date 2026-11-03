@@ -6,7 +6,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   return (
     <main className="min-h-screen flex flex-col items-center justify-start pt-32 pb-12 px-4 bg-[#050505]">
       
-      {/* 1. الشعار المتوهج (استخدمنا img بدلاً من Image لتجنب الأخطاء) */}
+      {/* 1. الشعار */}
       <div className="mb-8">
         <img 
           src="/logo.jpg" 
@@ -17,18 +17,18 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         />
       </div>
 
-      {/* 2. عنوان الموقع */}
-      <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 text-center">
+      {/* 2. العنوان المتوهج */}
+      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.9)]">
         Sofaine Robot
       </h1>
 
-      {/* 3. زر فتح الدردشة */}
+      {/* 3. زر فتح الدردشة (شفاف ويصبح أزرق عند الضغط) */}
       <div className="text-center mb-16">
         <a 
           href="https://t.me/sofainerobot" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-black px-8 py-4 rounded-full font-bold text-lg transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:scale-105"
+          className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 active:bg-blue-600 active:border-blue-500 active:shadow-[0_0_30px_rgba(59,130,246,0.8)] active:scale-95"
         >
           Open Chat <Send className="w-5 h-5" />
         </a>
@@ -45,7 +45,6 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         <a href="https://t.me/sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-sky-500/20 hover:text-sky-400 transition-all border border-white/10">
           <Send className="w-6 h-6" />
         </a>
-        {/* أيقونة تيك توك (استخدمنا الموسيقى مؤقتاً للتأكد من عدم وجود خطأ) */}
         <a href="https://www.tiktok.com/@sofaineroboot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/20 hover:text-white transition-all border border-white/10">
           <Music className="w-6 h-6" />
         </a>
