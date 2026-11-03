@@ -1,7 +1,5 @@
 import Image from 'next/image';
-import { Send } from 'lucide-react';
-import About from '@/components/About';
-import Contact from '@/components/Contact';
+import { Send, Instagram, Facebook, Music, Youtube, Twitter } from 'lucide-react';
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -9,7 +7,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   return (
     <main className="min-h-screen flex flex-col items-center justify-center pt-24 pb-12 px-4 bg-[#050505]">
       
-      {/* الشعار المتوهج */}
+      {/* 1. الشعار المتوهج */}
       <div className="mb-8">
         <Image 
           src="/logo.jpg" 
@@ -21,12 +19,12 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         />
       </div>
 
-      {/* عنوان الموقع */}
+      {/* 2. عنوان الموقع */}
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 text-center">
         Sofaine Robot
       </h1>
 
-      {/* زر فتح الدردشة */}
+      {/* 3. زر فتح الدردشة */}
       <div className="text-center mb-16">
         <a 
           href="https://t.me/sofainerobot" 
@@ -38,14 +36,26 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         </a>
       </div>
 
-      {/* تعريف بالبوت */}
-      <div className="w-full max-w-3xl mb-12">
-        <About />
-      </div>
-
-      {/* الحسابات الاجتماعية */}
-      <div className="w-full max-w-3xl">
-        <Contact />
+      {/* 4. الحسابات الاجتماعية (الروابط فقط) */}
+      <div className="flex flex-wrap justify-center gap-4 max-w-lg">
+        <a href="https://www.instagram.com/sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-pink-500/20 hover:text-pink-400 transition-all border border-white/10">
+          <Instagram className="w-6 h-6" />
+        </a>
+        <a href="https://www.facebook.com/share/18dstWZPr6/" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-blue-600/20 hover:text-blue-500 transition-all border border-white/10">
+          <Facebook className="w-6 h-6" />
+        </a>
+        <a href="https://t.me/sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-sky-500/20 hover:text-sky-400 transition-all border border-white/10">
+          <Send className="w-6 h-6" />
+        </a>
+        <a href="https://www.tiktok.com/@sofaineroboot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/20 hover:text-white transition-all border border-white/10">
+          <Music className="w-6 h-6" />
+        </a>
+        <a href="https://youtube.com/@sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-red-600/20 hover:text-red-500 transition-all border border-white/10">
+          <Youtube className="w-6 h-6" />
+        </a>
+        <a href="https://x.com/sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-gray-500/20 hover:text-gray-300 transition-all border border-white/10">
+          <Twitter className="w-6 h-6" />
+        </a>
       </div>
 
     </main>
