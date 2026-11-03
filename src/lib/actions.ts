@@ -2,16 +2,7 @@
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 
-// دالة وهمية لإرضاء Dashboard.tsx (لن تستخدم لأننا حذفنا صفحة الدخول)
-export async function adminLogin(formData: FormData) {
-  return { error: 'Not used' };
-}
-
-// دالة وهمية لإرضاء Dashboard.tsx
-export async function adminLogout() {
-  return;
-}
-
+// أبقينا فقط دوال الموقع العام في حال كنت تحتاجها مستقبلاً
 export async function updateHeroSettings(data: any) {
   const existing = await prisma.heroSettings.findFirst();
   if (existing) await prisma.heroSettings.update({ where: { id: existing.id }, data });
