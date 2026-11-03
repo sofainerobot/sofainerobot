@@ -3,30 +3,6 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 
-const ADMIN_PASSWORD = "Sofaine_Admin_2026!";
-
-export async function adminLogin(prevState: any, formData: FormData) {
-  const password = formData.get('password') as string;
-  const locale = formData.get('locale') as string || 'en';
-  
-  if (password === ADMIN_PASSWORD) {
-    const cookieStore = await cookies();
-    cookieStore.set('admin_session', 'true', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 604800,
-      path: '/',
-    });
-    return { success: true, locale }; // نرجع النجاح للمتصفح ليقوم بالتوجيه
-  }
-  return { error: 'كلمة المرور غير صحيحة' };
-}
-
-export async function adminLogout() {
-  const cookieStore = await cookies();
-  cookieStore.delete('admin_session');
-}
-
 async function checkAdmin() {
   if ((await cookies()).get('admin_session')?.value !== 'true') throw new Error('Unauthorized');
 }
