@@ -9,7 +9,6 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
   const cookieStore = await cookies();
   const session = cookieStore.get('admin_session')?.value;
 
-  // إذا لم يكن هناك جلسة، اطرده لصفحة الدخول
   if (session !== 'true') {
     redirect(`/${locale}/admin/login`);
   }

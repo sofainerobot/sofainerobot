@@ -18,9 +18,7 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
         </div>
 
         <form action={adminLogin} className="space-y-6">
-          {/* حقل مخفي لإرسال اللغة */}
           <input type="hidden" name="locale" value={locale} />
-          
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Admin Password
@@ -33,7 +31,6 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
               placeholder="••••••••••••••••"
             />
           </div>
-
           <button
             type="submit"
             className="w-full flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-bold py-3 px-4 rounded-xl transition-all"
