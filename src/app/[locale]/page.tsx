@@ -1,94 +1,47 @@
- export const dynamic = "force-dynamic";
+import { getTranslations } from 'next-intl/server';
+import About from '@/components/About';
+import Contact from '@/components/Contact';
+import { Send } from 'lucide-react';
 
-import Hero from "@/components/Hero";
-import Stats from "@/components/Stats";
-import Features from "@/components/Features";
-import HowItWorks from "@/components/HowItWorks";
-import About from "@/components/About";
-import FAQ from "@/components/FAQ";
-import Contact from "@/components/Contact";
-import { getHeroSettings, getFAQs, type FAQItem } from "@/lib/db";
-import { Locale } from "@/i18n";
-import { setRequestLocale, getTranslations } from "next-intl/server";
-
-/**
- * Main landing page (Server Component).
- *
- * - Fetches dynamic content (Hero, FAQ) from the database via `@/lib/db`
- *   (Prisma client at `@/lib/prisma`). Every DB call is wrapped in try/catch
- *   with safe fallbacks so a Prisma/connection failure on Vercel can never
- *   take down the page, and `null` data never crashes a section.
- * - Uses `getTranslations` from `next-intl/server` (awaited) for static text
- *   rendered directly in this Server Component. Client sections (Hero, About,
- *   FAQ, …) remain `"use client"` and keep using `useTranslations`, which is
- *   correct for client components only.
- * - Navbar/Footer are rendered by `[locale]/layout.tsx` around `{children}`,
- *   so they are NOT rendered here.
- */
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ locale: Locale }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  setRequestLocale(locale);
-
-  // ------------------------------------------------------------------
-  // Server-side translations (awaited).
-  //
-  // `getTranslations` is the Server Component counterpart of
-  // `useTranslations` (which is client-components only). Scoped to the
-  // "hero" namespace so we have safe fallback strings. Wrapped in try/catch
-  // so a missing/unavailable messages source never crashes the page.
-  // ------------------------------------------------------------------
-  let t: (key: string) => string;
+  
+  // جلب الترجمة الخاصة بقسم About (إذا كانت موجودة)
+  let t;
   try {
-    t = await getTranslations({ locale, namespace: "hero" });
-  } catch {
-    // Identity fallback: `t(key) ?? default` still works, nothing crashes.
-    t = (key) => key;
-  }
-
-  // ------------------------------------------------------------------
-  // Database: wrapped in try/catch so a Prisma/connection failure never
-  // crashes the page. Falls back to safe defaults.
-  // ------------------------------------------------------------------
-  let hero = {
-    id: 1,
-    title: t("title") ?? "Sofaine Robot",
-    description:
-      t("techStack") ??
-      "Your AI-Powered Telegram Assistant — fast, secure, and available 24/7.",
-  };
-
-  try {
-    const dbHero = await getHeroSettings();
-    if (dbHero) {
-      // `getHeroSettings` creates a row when none exists, but guard against
-      // null anyway so the section never receives undefined data.
-      hero = dbHero;
-    }
-  } catch {
-    // Keep the fallback hero above; the page stays up without DB data.
-  }
-
-  let faqs: FAQItem[] = [];
-  try {
-    const fetched = await getFAQs();
-    faqs = Array.isArray(fetched) ? fetched : [];
-  } catch {
-    faqs = [];
+    t = await getTranslations({ locale, namespace: 'about' });
+  } catch (error) {
+    t = (key: string) => key; // في حال عدم وجود ترجمة
   }
 
   return (
-    <main className="relative">
-      <Hero description={hero.description} />
-      <Stats />
-      <Features />
-      <HowItWorks />
-      <About />
-      <FAQ faqs={faqs} />
-      <Contact />
+    <main className="min-h-screen flex flex-col items-center justify-center pt-24 pb-12 px-4 bg-[#050505]">
+      
+      {/* 1. زر فتح الدردشة (Open Chat) */}
+      <div className="text-center mb-16 animate-fade-in">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          Sofaine Robot
+        </h1>
+        <a 
+          href="https://t.me/sofainerobot" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-black px-8 py-4 rounded-full font-bold text-lg transition-all shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:scale-105"
+        >
+          Open Chat <Send className="w-5 h-5" />
+        </a>
+      </div>
+
+      {/* 2. تعريف بالبوت (About) */}
+      <div className="w-full max-w-3xl mb-12">
+        <About />
+      </div>
+
+      {/* 3. الحسابات الاجتماعية (Contact) */}
+      <div className="w-full max-w-3xl">
+        <Contact />
+      </div>
+
     </main>
   );
 }
