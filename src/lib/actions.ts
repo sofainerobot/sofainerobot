@@ -5,10 +5,13 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
+// كلمة المرور مثبتة هنا مباشرة لضمان عملها 100%
+const ADMIN_PASSWORD = "Sofaine_Admin_2026!";
+
 async function checkAdmin() {
   const cookieStore = await cookies();
   const session = cookieStore.get('admin_session')?.value;
-  if (!session) {
+  if (session !== 'true') {
     throw new Error('Unauthorized');
   }
 }
@@ -16,15 +19,12 @@ async function checkAdmin() {
 export async function adminLogin(formData: FormData) {
   const password = formData.get('password') as string;
   
-  // سيقرأ كلمة المرور من Vercel، وإذا لم يجدها سيستخدم ADMIN_PASSWORD
-  const adminPassword = process.env.ADMIN_PASSWORD || 'ADMIN_PASSWORD';
-
-  if (password === adminPassword) {
+  if (password === ADMIN_PASSWORD) {
     const cookieStore = await cookies();
     cookieStore.set('admin_session', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 7, // أسبوع
       path: '/',
     });
     redirect('/admin/dashboard');

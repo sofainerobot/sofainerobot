@@ -1,35 +1,20 @@
-export const dynamic = 'force-dynamic';
-import { getHeroSettings, getFAQs, getSocialLinks } from "@/lib/db";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getExpectedToken } from "@/lib/token";
-import AdminDashboard from "@/components/admin/Dashboard";
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import AdminDashboard from '@/components/admin/Dashboard';
 
-/**
- * Admin Dashboard page (Server Component).
- *
- * Protected by BOTH middleware (middleware.ts) and this page-level cookie check,
- * so the dashboard is never accessible without a valid admin session.
- *
- * Reads the current database content and passes it to the interactive client
- * dashboard.
- */
-export default async function AdminDashboardPage() {
+export default async function AdminDashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const cookieStore = await cookies();
-  const token = cookieStore.get("admin_session")?.value;
-  const locale = cookieStore.get("NEXT_LOCALE")?.value ?? "en";
+  const session = cookieStore.get('admin_session')?.value;
 
-  if (token !== getExpectedToken()) {
+  // إذا لم يكن هناك جلسة صالحة، قم بطرده فوراً
+  if (session !== 'true') {
     redirect(`/${locale}/admin/login`);
   }
 
-  const [hero, faqs, socialLinks] = await Promise.all([
-    getHeroSettings(),
-    getFAQs(),
-    getSocialLinks(),
-  ]);
-
   return (
-    <AdminDashboard hero={hero} faqs={faqs} socialLinks={socialLinks} />
+    <div className="min-h-screen bg-[#050505] p-6">
+      <AdminDashboard />
+    </div>
   );
 }
