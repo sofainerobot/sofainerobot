@@ -18,6 +18,9 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
         </div>
 
         <form action={adminLogin} className="space-y-6">
+          {/* حقل مخفي لإرسال اللغة */}
+          <input type="hidden" name="locale" value={locale} />
+          
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Admin Password

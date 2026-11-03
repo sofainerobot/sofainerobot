@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
-// كلمة المرور مثبتة هنا مباشرة لضمان عملها 100%
+// كلمة المرور الصارمة
 const ADMIN_PASSWORD = "Sofaine_Admin_2026!";
 
 async function checkAdmin() {
@@ -18,6 +18,7 @@ async function checkAdmin() {
 
 export async function adminLogin(formData: FormData) {
   const password = formData.get('password') as string;
+  const locale = formData.get('locale') as string || 'en'; // جلب اللغة من النموذج
   
   if (password === ADMIN_PASSWORD) {
     const cookieStore = await cookies();
@@ -27,7 +28,7 @@ export async function adminLogin(formData: FormData) {
       maxAge: 60 * 60 * 24 * 7, // أسبوع
       path: '/',
     });
-    redirect('/admin/dashboard');
+    redirect(`/${locale}/admin/dashboard`); // توجيه للوحة التحكم باللغة الصحيحة
   } else {
     return { error: 'كلمة المرور غير صحيحة' };
   }
@@ -36,7 +37,7 @@ export async function adminLogin(formData: FormData) {
 export async function adminLogout() {
   const cookieStore = await cookies();
   cookieStore.delete('admin_session');
-  redirect('/admin/login');
+  redirect('/en/admin/login');
 }
 
 export async function updateHeroSettings(data: { title: string; description: string }) {
