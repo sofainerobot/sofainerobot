@@ -1,9 +1,6 @@
 import { Lock, ArrowRight } from "lucide-react";
 
-export default async function Page({ params, searchParams }: { params: Promise<{ locale: string }>, searchParams: Promise<{ error?: string }> }) {
-  const { locale } = await params;
-  const { error } = await searchParams;
-
+export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#050505] px-4">
       <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
@@ -13,11 +10,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           </div>
           <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
         </div>
-
-        {error && <p className="text-red-500 text-center mb-4 text-sm">كلمة المرور غير صحيحة</p>}
-
         <form action="/api/login" method="POST" className="space-y-6">
-          <input type="hidden" name="locale" value={locale} />
           <div>
             <input
               type="password"

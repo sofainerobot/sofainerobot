@@ -4,16 +4,10 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
-// دالة وهمية لإرضاء ملف Dashboard.tsx ومنع خطأ البناء
-export async function adminLogin(formData: FormData) {
-  return { error: 'يرجى استخدام صفحة تسجيل الدخول المخصصة.' };
-}
-
-// دالة تسجيل الخروج التي يبحث عنها الملف
+export async function adminLogin(formData: FormData) { return { error: 'Use API' }; }
 export async function adminLogout() {
-  const cookieStore = await cookies();
-  cookieStore.delete('admin_session');
-  redirect('/en/admin/login');
+  (await cookies()).delete('admin_session');
+  redirect('/admin/login');
 }
 
 async function checkAdmin() {
