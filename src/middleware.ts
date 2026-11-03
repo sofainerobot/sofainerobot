@@ -1,69 +1,39 @@
-import createMiddleware from "next-intl/middleware";
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing'; // تأكد من مسار ملف routing الخاص بك
 
-import { locales, defaultLocale } from "@/i18n";
-import { getExpectedToken } from "@/lib/token";
-
-/**
- * next-intl locale middleware.
- *
- * Handles locale detection, redirects (e.g. `/` -> `/en/`), and the
- * NEXT_LOCALE cookie so the user's language persists across requests.
- *
- * `localePrefix: "always"` means every public URL carries the locale:
- * `/en/`, `/ar/`, `/fr/`, ...
- */
-const intlMiddleware = createMiddleware({
-  locales,
-  defaultLocale,
-  localePrefix: "always",
-});
+// 1. إنشاء ميدلوير اللغة
+const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // ------------------------------------------------------------------
-  // Admin panel protection.
-  //
-  // After restructuring, admin routes live under [locale], so they are
-  // reachable at /<locale>/admin/*. We protect those paths here.
-  // ------------------------------------------------------------------
-  const adminMatch = pathname.match(/^\/([a-z]{2})\/admin\/(.*)$/);
-  if (adminMatch) {
-    const [, locale] = adminMatch;
-    const token = request.cookies.get("admin_session")?.value;
-    const isAuthenticated = token === getExpectedToken();
-    const isLogin = pathname.endsWith("/admin/login");
+  // 2. التحقق مما إذا كان المسار الحالي هو مسار إداري (admin)
+  // نستخدم split للتحقق من وجود 'admin' في أي جزء من المسار
+  const isAdminRoute = pathname.split('/').includes('admin');
 
-    if (isLogin) {
-      // Already authenticated: send to dashboard.
-      if (isAuthenticated) {
-        return NextResponse.redirect(
-          new URL(`/${locale}/admin/dashboard`, request.url)
-        );
-      }
-      // Not authenticated: let them see the login page.
-      return intlMiddleware(request);
-    }
+  // 3. إذا كان مساراً إدارياً، نتحقق من وجود جلسة صالحة
+  if (isAdminRoute) {
+    const sessionCookie = request.cookies.get('admin_session')?.value;
 
-    // All other admin routes: require authentication.
-    if (!isAuthenticated) {
+    // إذا لم تكن هناك جلسة، نعيد التوجيه إلى صفحة تسجيل الدخول
+    if (!sessionCookie) {
+      // إعادة التوجيه مع الحفاظ على اللغة الحالية (إن وجدت)
+      const locale = pathname.split('/')[1] || 'en';
       const loginUrl = new URL(`/${locale}/admin/login`, request.url);
-      loginUrl.searchParams.set("from", pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  // ------------------------------------------------------------------
-  // Everything else: let next-intl handle locale routing/redirects.
-  // ------------------------------------------------------------------
+  // 4. إذا لم يكن مساراً إدارياً أو كان المستخدم مسجلاً، نكمل مع ميدلوير اللغة
   return intlMiddleware(request);
 }
 
+// 5. تكوين matcher ليشمل جميع المسارات، مع استثناء الملفات الثابتة وواجهات API
 export const config = {
   matcher: [
-    // Skip Next.js internals and static files (anything with a file extension).
-    "/((?!_next|.*\\..*).*)",
+    // طابق جميع المسارات باستثناء الملفات الثابتة و API
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
