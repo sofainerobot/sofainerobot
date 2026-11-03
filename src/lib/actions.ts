@@ -5,7 +5,6 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 
-// كلمة المرور الصارمة
 const ADMIN_PASSWORD = "Sofaine_Admin_2026!";
 
 async function checkAdmin() {
@@ -18,17 +17,17 @@ async function checkAdmin() {
 
 export async function adminLogin(formData: FormData) {
   const password = formData.get('password') as string;
-  const locale = formData.get('locale') as string || 'en'; // جلب اللغة من النموذج
+  const locale = formData.get('locale') as string || 'en';
   
   if (password === ADMIN_PASSWORD) {
     const cookieStore = await cookies();
     cookieStore.set('admin_session', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // أسبوع
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
-    redirect(`/${locale}/admin/dashboard`); // توجيه للوحة التحكم باللغة الصحيحة
+    redirect(`/${locale}/admin/dashboard`);
   } else {
     return { error: 'كلمة المرور غير صحيحة' };
   }
