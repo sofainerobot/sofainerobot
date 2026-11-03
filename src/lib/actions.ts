@@ -7,7 +7,9 @@ import { prisma } from '@/lib/prisma';
 export async function adminLogin(formData: FormData) {
   const password = formData.get('password') as string;
   const locale = formData.get('locale') as string || 'en';
-  if (password === 'Sofaine_Admin_2026!') {
+  
+  // قبول كلمة المرور كما طلبت
+  if (password === 'ADMIN_PASSWORD' || password === 'Sofaine_Admin_2026!') {
     const cookieStore = await cookies();
     cookieStore.set('admin_session', 'true', { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 604800, path: '/' });
     redirect(`/${locale}/admin/dashboard`);
