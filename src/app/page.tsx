@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Globe } from 'lucide-react';
+import Image from 'next/image'; // استيراد مكون الصورة المحسن
 
 const translations = {
   en: {
@@ -58,13 +59,8 @@ export default function Page() {
   return (
     <main className="min-h-screen flex flex-col items-center relative bg-[#050505] overflow-x-hidden">
       
-      {/* الشريط العلوي (Header) */}
       <header className="w-full flex items-center justify-between px-6 py-6 max-w-4xl mx-auto z-50 relative">
-        
-        {/* تجميع الأيقونة والاسم معاً مع مسافة بينهما */}
         <div className="flex items-center gap-5 md:gap-6">
-          
-          {/* الزر الدائري (الكرة الأرضية) */}
           <div className="relative">
             <button 
               onClick={() => setIsLangOpen(!isLangOpen)}
@@ -72,8 +68,6 @@ export default function Page() {
             >
               <Globe className="text-cyan-400 w-6 h-6" />
             </button>
-
-            {/* القائمة المنسدلة للغات */}
             {isLangOpen && (
               <div className="absolute top-full mt-2 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl z-50 ltr:left-0 rtl:right-0">
                 <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
@@ -82,33 +76,32 @@ export default function Page() {
               </div>
             )}
           </div>
-
-          {/* الاسم */}
           <div className="text-2xl md:text-3xl font-bold tracking-widest font-[family-name:var(--font-orbitron)]">
             <span className="text-white">CYBER</span>
             <span className="text-red-600">NEXUS</span>
           </div>
-
         </div>
-
-        {/* مساحة فارغة لموازنة التصميم */}
         <div className="w-12 h-12 pointer-events-none"></div>
       </header>
 
-      {/* المحتوى الرئيسي */}
       <div className="flex flex-col items-center justify-start w-full px-4 pb-12 z-10 mt-8">
         
-        {/* الشعار */}
+        {/* استخدام Next Image لضغط الصورة وتحسين التحميل */}
         <div className="mb-8 animate-float">
-          <img src="/logo.jpg" alt="Logo" width={150} height={150} className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)]" />
+          <Image 
+            src="/logo.jpg" 
+            alt="Logo" 
+            width={150} 
+            height={150} 
+            priority // تحميل سريع للصورة الأولى
+            className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)]" 
+          />
         </div>
 
-        {/* الاسم الرئيسي */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl mb-12 text-center uppercase animated-gradient-text faint-glow font-[family-name:var(--font-orbitron)] whitespace-nowrap">
           {t.mainTitle}
         </h1>
 
-        {/* زر الدردشة الرئيسي */}
         <div className="text-center mb-16">
           <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 active:bg-blue-600 active:border-blue-500 active:shadow-[0_0_30px_rgba(59,130,246,0.8)] active:scale-95">
             {t.openChat}
@@ -116,7 +109,6 @@ export default function Page() {
           </a>
         </div>
 
-        {/* السوشيال ميديا */}
         <div className="flex flex-wrap justify-center gap-5 max-w-lg mt-8 mb-12">
           <a href="https://www.instagram.com/sofainerobot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-pink-500/20 hover:text-pink-400 transition-all border border-white/10">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -138,7 +130,6 @@ export default function Page() {
           </a>
         </div>
 
-        {/* بطاقة الخدمات */}
         <div className="w-full max-w-lg bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-left shadow-lg" dir={t.dir}>
           <h2 className="text-xl font-bold text-white mb-6 text-center">{t.offerTitle}</h2>
           <div className="flex flex-col gap-5 text-gray-300 text-sm">
