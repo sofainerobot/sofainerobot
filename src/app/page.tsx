@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Globe, Menu, X } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 const translations = {
   en: {
@@ -60,9 +60,24 @@ export default function Page() {
       
       {/* الشريط العلوي (Header) */}
       <header className="w-full flex items-center justify-between px-6 py-6 max-w-4xl mx-auto z-50 relative">
-        {/* الأيقونة (الكرة الأرضية) */}
-        <div className="w-12 h-12 rounded-full border border-red-500/50 flex items-center justify-center bg-[#0a0a0a]">
-          <Globe className="text-cyan-400 w-6 h-6" />
+        
+        {/* الزر الدائري (الكرة الأرضية) الذي يفتح القائمة الآن */}
+        <div className="relative">
+          <button 
+            onClick={() => setIsLangOpen(!isLangOpen)}
+            className="w-12 h-12 rounded-full border border-red-500/50 flex items-center justify-center bg-[#0a0a0a] hover:bg-[#1a1a1a] transition-colors"
+          >
+            <Globe className="text-cyan-400 w-6 h-6" />
+          </button>
+
+          {/* القائمة المنسدلة للغات */}
+          {isLangOpen && (
+            <div className="absolute top-full mt-2 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl z-50 ltr:left-0 rtl:right-0">
+              <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
+              <button onClick={() => changeLang('fr')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'fr' ? 'text-red-500' : 'text-white'}`} dir="ltr">Français</button>
+              <button onClick={() => changeLang('en')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'en' ? 'text-red-500' : 'text-white'}`} dir="ltr">English</button>
+            </div>
+          )}
         </div>
 
         {/* الاسم في المنتصف */}
@@ -71,23 +86,8 @@ export default function Page() {
           <span className="text-red-600">NEXUS</span>
         </div>
 
-        {/* القائمة المنسدلة للغات */}
-        <div className="relative">
-          <button 
-            onClick={() => setIsLangOpen(!isLangOpen)}
-            className="p-2 text-gray-300 hover:text-white transition-colors"
-          >
-            {isLangOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-
-          {isLangOpen && (
-            <div className="absolute top-full mt-2 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl z-50 ltr:right-0 rtl:left-0">
-              <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
-              <button onClick={() => changeLang('fr')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'fr' ? 'text-red-500' : 'text-white'}`} dir="ltr">Français</button>
-              <button onClick={() => changeLang('en')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'en' ? 'text-red-500' : 'text-white'}`} dir="ltr">English</button>
-            </div>
-          )}
-        </div>
+        {/* مساحة فارغة في اليمين لموازنة التصميم (لأن الزر الآن على اليسار) */}
+        <div className="w-12 h-12 pointer-events-none"></div>
       </header>
 
       {/* المحتوى الرئيسي */}
