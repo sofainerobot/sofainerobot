@@ -22,16 +22,29 @@ function simpleHash(text: string): string {
 /**
  * Returns the expected session token. Both login and middleware compute the same
  * value, so they stay in sync.
+ *
+ * Throws if ADMIN_PASSWORD or ADMIN_SESSION_SECRET are not set, preventing silent
+ * fallback to weak hardcoded credentials in production.
  */
 export function getExpectedToken(): string {
-  const password = process.env.ADMIN_PASSWORD || "sofaine_admin_2026";
-  const secret = process.env.ADMIN_SESSION_SECRET || "sofaine-change-me-in-production";
+  const password = process.env.ADMIN_PASSWORD;
+  const secret = process.env.ADMIN_SESSION_SECRET;
+  if (!password || !secret) {
+    throw new Error("ADMIN_PASSWORD and ADMIN_SESSION_SECRET must be set");
+  }
   return "sess_" + simpleHash(`${password}:${secret}`);
 }
 
 /**
  * Check whether the supplied plaintext password matches the configured ADMIN_PASSWORD.
+ *
+ * Throws if ADMIN_PASSWORD is not set, preventing silent fallback to a weak
+ * hardcoded credential.
  */
 export function isValidPassword(password: string): boolean {
-  return password === (process.env.ADMIN_PASSWORD || "sofaine_admin_2026");
+  const expected = process.env.ADMIN_PASSWORD;
+  if (!expected) {
+    throw new Error("ADMIN_PASSWORD must be set");
+  }
+  return password === expected;
 }
