@@ -7,15 +7,18 @@ body {
   color: white;
 }
 
-@keyframes soft-pulse-glow {
-  0%, 100% { filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)) drop-shadow(0 0 8px rgba(6,182,212,0.2)); }
-  50% { filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)) drop-shadow(0 0 20px rgba(6,182,212,0.6)) drop-shadow(0 0 30px rgba(139,92,246,0.4)); }
+/* حركة التدرج اللوني (تتحرك ببطء وهدوء) */
+@keyframes bg-pan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.glow-title {
-  animation: soft-pulse-glow 4s ease-in-out infinite;
-  background: linear-gradient(90deg, #22d3ee, #ffffff, #a855f7);
+.animated-gradient-text {
+  background: linear-gradient(90deg, #22d3ee, #a855f7, #22d3ee);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: bg-pan 6s linear infinite;
   letter-spacing: 2px;
 }

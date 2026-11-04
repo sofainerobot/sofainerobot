@@ -7,8 +7,8 @@ export default function Page() {
         <img src="/logo.jpg" alt="Logo" width={150} height={150} className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)]" />
       </div>
 
-      {/* الاسم المزخرف مع التوهج الناعم */}
-      <h1 className="text-4xl md:text-6xl mb-12 text-center uppercase glow-title">
+      {/* الاسم بخط مزخرف وألوان متحركة هادئة بدون توهج */}
+      <h1 className="text-4xl md:text-6xl mb-12 text-center uppercase animated-gradient-text font-[family-name:var(--font-orbitron)]">
         Sofain Robot
       </h1>
 
