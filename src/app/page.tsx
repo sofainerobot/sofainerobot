@@ -109,7 +109,7 @@ export default function Page() {
         <div className="text-center mb-16">
           <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 active:bg-blue-600 active:border-blue-500 active:shadow-[0_0_30px_rgba(59,130,246,0.8)] active:scale-95">
             {t.openChat}
-            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <span className="animate-[spin_4s_linear_infinite] text-2xl inline-block">🚀</span>
           </a>
         </div>
 
