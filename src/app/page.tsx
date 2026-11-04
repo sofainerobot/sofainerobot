@@ -1,10 +1,59 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Globe, Menu, X } from 'lucide-react';
+
+const translations = {
+  en: {
+    dir: 'ltr',
+    offerTitle: "What does Sofaine Robot offer?",
+    features: [
+      { title: "Exclusive Git Exploits", desc: "Constantly updated vulnerabilities and exploits." },
+      { title: "Advanced AI Tools", desc: "Access powerful AI models to boost your workflow." },
+      { title: "Dark Web & Beyond", desc: "Explore unique websites and hidden apps." }
+    ],
+    openChat: "Open Chat",
+    mainTitle: "SOFAIN ROBOT"
+  },
+  fr: {
+    dir: 'ltr',
+    offerTitle: "Que propose Sofaine Robot ?",
+    features: [
+      { title: "Exploits Git Exclusifs", desc: "Vulnérabilités et exploits constamment mis à jour." },
+      { title: "Outils IA Avancés", desc: "Accédez à de puissants modèles d'IA pour booster votre flux de travail." },
+      { title: "Dark Web et au-delà", desc: "Explorez des sites Web uniques et des applications cachées." }
+    ],
+    openChat: "Ouvrir le Chat",
+    mainTitle: "SOFAIN ROBOT"
+  },
+  ar: {
+    dir: 'rtl',
+    offerTitle: "ماذا يقدم سفيان روبوت؟",
+    features: [
+      { title: "ثغرات Git حصرية", desc: "ثغرات واستغلالات محدثة باستمرار." },
+      { title: "أدوات ذكاء اصطناعي متقدمة", desc: "الوصول إلى نماذج ذكاء اصطناعي قوية لتعزيز عملك." },
+      { title: "الويب المظلم وما بعده", desc: "استكشف مواقع فريدة وتطبيقات خفية." }
+    ],
+    openChat: "افتح الدردشة",
+    mainTitle: "سفيان روبوت"
+  }
+};
 
 export default function Page() {
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [lang, setLang] = useState<'en' | 'fr' | 'ar'>('en');
+
+  const t = translations[lang];
+
+  useEffect(() => {
+    document.documentElement.dir = t.dir;
+    document.documentElement.lang = lang;
+  }, [lang, t.dir]);
+
+  const changeLang = (l: 'en' | 'fr' | 'ar') => {
+    setLang(l);
+    setIsLangOpen(false);
+  };
 
   return (
     <main className="min-h-screen flex flex-col items-center relative bg-[#050505] overflow-hidden">
@@ -16,13 +65,13 @@ export default function Page() {
           <Globe className="text-cyan-400 w-6 h-6" />
         </div>
 
-        {/* الاسم في المنتصف */}
+        {/* الاسم الجديد في المنتصف */}
         <div className="text-2xl md:text-3xl font-bold tracking-widest font-[family-name:var(--font-orbitron)]">
-          <span className="text-white">SOFAINE</span>
-          <span className="text-red-600">ROBOT</span>
+          <span className="text-white">CYBER</span>
+          <span className="text-red-600">NEXUS</span>
         </div>
 
-        {/* القائمة المنسدلة للغات (يمين) */}
+        {/* القائمة المنسدلة للغات */}
         <div className="relative">
           <button 
             onClick={() => setIsLangOpen(!isLangOpen)}
@@ -32,16 +81,16 @@ export default function Page() {
           </button>
 
           {isLangOpen && (
-            <div className="absolute right-0 mt-4 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl">
-              <button className="w-full text-right px-5 py-4 text-red-500 hover:bg-white/5 font-bold text-lg" dir="rtl">العربية</button>
-              <button className="w-full text-right px-5 py-4 text-white hover:bg-white/5 font-bold text-lg" dir="ltr">Français</button>
-              <button className="w-full text-left px-5 py-4 text-white hover:bg-white/5 font-bold text-lg" dir="ltr">English</button>
+            <div className="absolute right-0 ltr:right-0 rtl:left-0 mt-4 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl">
+              <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
+              <button onClick={() => changeLang('fr')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'fr' ? 'text-red-500' : 'text-white'}`} dir="ltr">Français</button>
+              <button onClick={() => changeLang('en')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'en' ? 'text-red-500' : 'text-white'}`} dir="ltr">English</button>
             </div>
           )}
         </div>
       </header>
 
-      {/* المحتوى الرئيسي (الذي كان موجوداً سابقاً) */}
+      {/* المحتوى الرئيسي */}
       <div className="flex flex-col items-center justify-start w-full px-4 pb-12 z-10 mt-8">
         
         {/* الشعار مع حركة الطفو */}
@@ -49,15 +98,15 @@ export default function Page() {
           <img src="/logo.jpg" alt="Logo" width={150} height={150} className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)]" />
         </div>
 
-        {/* الاسم الرئيسي (الذي يتحرك ويتوهج) */}
+        {/* الاسم الرئيسي */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl mb-12 text-center uppercase animated-gradient-text faint-glow font-[family-name:var(--font-orbitron)] whitespace-nowrap">
-          Sofain Robot
+          {t.mainTitle}
         </h1>
 
         {/* زر الدردشة */}
         <div className="text-center mb-16">
           <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 active:bg-blue-600 active:border-blue-500 active:shadow-[0_0_30px_rgba(59,130,246,0.8)] active:scale-95">
-            Open Chat 
+            {t.openChat}
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </a>
         </div>
@@ -84,21 +133,21 @@ export default function Page() {
           </a>
         </div>
 
-        {/* بطاقة الخدمات */}
-        <div className="w-full max-w-lg bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-left shadow-lg">
-          <h2 className="text-xl font-bold text-white mb-6 text-center">What does Sofaine Robot offer?</h2>
+        {/* بطاقة الخدمات (تتغير حسب اللغة) */}
+        <div className="w-full max-w-lg bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-left shadow-lg" dir={t.dir}>
+          <h2 className="text-xl font-bold text-white mb-6 text-center">{t.offerTitle}</h2>
           <div className="flex flex-col gap-5 text-gray-300 text-sm">
             <div className="flex items-start gap-4">
               <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="text-red-400 shrink-0 mt-0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              <div><strong className="text-white block mb-1">Exclusive Git Exploits</strong><p>Constantly updated vulnerabilities and exploits.</p></div>
+              <div><strong className="text-white block mb-1">{t.features[0].title}</strong><p>{t.features[0].desc}</p></div>
             </div>
             <div className="flex items-start gap-4">
               <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="text-cyan-400 shrink-0 mt-0.5"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
-              <div><strong className="text-white block mb-1">Advanced AI Tools</strong><p>Access powerful AI models to boost your workflow.</p></div>
+              <div><strong className="text-white block mb-1">{t.features[1].title}</strong><p>{t.features[1].desc}</p></div>
             </div>
             <div className="flex items-start gap-4">
               <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="text-purple-400 shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-              <div><strong className="text-white block mb-1">Dark Web & Beyond</strong><p>Explore unique websites and hidden apps.</p></div>
+              <div><strong className="text-white block mb-1">{t.features[2].title}</strong><p>{t.features[2].desc}</p></div>
             </div>
           </div>
         </div>
