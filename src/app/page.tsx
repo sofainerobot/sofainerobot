@@ -7,36 +7,39 @@ import Image from 'next/image'; // استيراد مكون الصورة المح
 const translations = {
   en: {
     dir: 'ltr',
-    offerTitle: "What does Sofaine Robot offer?",
+    subtitle: "Your ultimate gateway to elite cybersecurity, next-gen AI, and the hidden web.",
+    offerTitle: "Unlock Your Cyber Arsenal",
+    openChat: "Launch Bot",
+    mainTitle: "SOFAIN ROBOT",
     features: [
-      { title: "Exclusive Git Exploits", desc: "Constantly updated vulnerabilities and exploits." },
-      { title: "Advanced AI Tools", desc: "Access powerful AI models to boost your workflow." },
-      { title: "Dark Web & Beyond", desc: "Explore unique websites and hidden apps." }
-    ],
-    openChat: "Open Chat",
-    mainTitle: "SOFAIN ROBOT"
+      { title: "Exclusive Zero-Day & Git Exploits", desc: "Stay ahead with real-time, exclusive access to the latest vulnerabilities and advanced Git exploits." },
+      { title: "Next-Gen AI Arsenal", desc: "Supercharge your workflow with state-of-the-art AI models engineered for elite performance." },
+      { title: "Deep Web & Hidden Apps", desc: "Navigate the unseen. Discover restricted apps, hidden websites, and exclusive resources beyond the surface web." }
+    ]
   },
   fr: {
     dir: 'ltr',
-    offerTitle: "Que propose Sofaine Robot ?",
+    subtitle: "Votre passerelle ultime vers la cybersécurité d'élite, l'IA de nouvelle génération et le web caché.",
+    offerTitle: "Débloquez votre Arsenal Cyber",
+    openChat: "Lancer le Bot",
+    mainTitle: "SOFAIN ROBOT",
     features: [
-      { title: "Exploits Git Exclusifs", desc: "Vulnérabilités et exploits constamment mis à jour." },
-      { title: "Outils IA Avancés", desc: "Accédez à de puissants modèles d'IA pour booster votre flux de travail." },
-      { title: "Dark Web et au-delà", desc: "Explorez des sites Web uniques et des applications cachées." }
-    ],
-    openChat: "Ouvrir le Chat",
-    mainTitle: "SOFAIN ROBOT"
+      { title: "Exploits Zero-Day & Git", desc: "Gardez une longueur d'avance avec un accès exclusif aux dernières vulnérabilités et exploits Git." },
+      { title: "Arsenal d'IA de Nouvelle Génération", desc: "Boostez votre flux de travail avec des modèles d'IA de pointe conçus pour la performance." },
+      { title: "Deep Web & Applications Cachées", desc: "Naviguez dans l'invisible. Découvrez des applications restreintes et des sites web cachés." }
+    ]
   },
   ar: {
     dir: 'rtl',
-    offerTitle: "ماذا يقدم سفيان روبوت؟",
+    subtitle: "بوابتك المطلقة للأمن السيبراني، الذكاء الاصطناعي المتقدم، وعالم الويب الخفي.",
+    offerTitle: "اكتشف ترسانتك السيبرانية",
+    openChat: "أطلق البوت",
+    mainTitle: "سفيان روبوت",
     features: [
-      { title: "ثغرات Git حصرية", desc: "ثغرات واستغلالات محدثة باستمرار." },
-      { title: "أدوات ذكاء اصطناعي متقدمة", desc: "الوصول إلى نماذج ذكاء اصطناعي قوية لتعزيز عملك." },
-      { title: "الويب المظلم وما بعده", desc: "استكشف مواقع فريدة وتطبيقات خفية." }
-    ],
-    openChat: "افتح الدردشة",
-    mainTitle: "سفيان روبوت"
+      { title: "ثغرات حصرية ومتقدمة", desc: "ابق في الطليعة مع وصول فوري وحصري لأحدث الثغرات وتحديثات Git المتقدمة." },
+      { title: "ترسانة الذكاء الاصطناعي", desc: "ضاعف إنتاجيتك باستخدام أحدث نماذج الذكاء الاصطناعي المصممة للأداء الاحترافي." },
+      { title: "الويب المظلم والتطبيقات الخفية", desc: "استكشف المجهول. اكتشف تطبيقات مقيدة، ومواقع خفية، وموارد حصرية تتجاوز الويب السطحي." }
+    ]
   }
 };
 
@@ -101,6 +104,7 @@ export default function Page() {
         <h1 className="text-3xl sm:text-4xl md:text-5xl mb-12 text-center uppercase animated-gradient-text faint-glow font-[family-name:var(--font-orbitron)] whitespace-nowrap">
           {t.mainTitle}
         </h1>
+        <p className="text-sm text-gray-400 text-center mb-8">{t.subtitle}</p>
 
         <div className="text-center mb-16">
           <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 active:bg-blue-600 active:border-blue-500 active:shadow-[0_0_30px_rgba(59,130,246,0.8)] active:scale-95">
