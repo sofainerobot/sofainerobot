@@ -7,7 +7,7 @@ body {
   color: white;
 }
 
-/* حركة التدرج اللوني (تتحرك ببطء وهدوء) */
+/* حركة الألوان المتحركة داخل النص */
 @keyframes bg-pan {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -21,4 +21,20 @@ body {
   -webkit-text-fill-color: transparent;
   animation: bg-pan 6s linear infinite;
   letter-spacing: 2px;
+}
+
+/* توهج خافت جداً للنص */
+.faint-glow {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 20px rgba(168, 85, 247, 0.15));
+}
+
+/* حركة طفو الشعار (تذهب وتأتي) */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
 }

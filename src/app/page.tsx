@@ -2,13 +2,15 @@ import React from 'react';
 
 export default function Page() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-start pt-32 pb-12 px-4 bg-[#050505]">
-      <div className="mb-8">
+    <main className="min-h-screen flex flex-col items-center justify-start pt-32 pb-12 px-4 bg-[#050505] overflow-hidden">
+      
+      {/* الشعار مع حركة الطفو */}
+      <div className="mb-8 animate-float">
         <img src="/logo.jpg" alt="Logo" width={150} height={150} className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)]" />
       </div>
 
-      {/* الاسم بخط مزخرف وألوان متحركة هادئة بدون توهج */}
-      <h1 className="text-4xl md:text-6xl mb-12 text-center uppercase animated-gradient-text font-[family-name:var(--font-orbitron)]">
+      {/* الاسم: خط مزخرف، ألوان متحركة، توهج خافت، وحجم مناسب ليبقى في سطر واحد */}
+      <h1 className="text-3xl sm:text-4xl md:text-5xl mb-12 text-center uppercase animated-gradient-text faint-glow font-[family-name:var(--font-orbitron)] whitespace-nowrap">
         Sofain Robot
       </h1>
 
