@@ -108,7 +108,7 @@ export default function Page() {
 
         <div className="text-center mb-16">
           <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center">
-            <img src="https://static.iimg.live/uploads/supreme-masterpiece-8195.png" alt="Open Bot" className="w-full max-w-sm md:max-w-md mx-auto mix-blend-screen animate-hover-glow transition-transform duration-300 hover:scale-105" />
+            <img src="https://static.iimg.live/uploads/supreme-masterpiece-8195.png" alt="Open Bot" className="w-full max-w-xs md:max-w-sm mx-auto mix-blend-screen animate-hover-glow transition-transform duration-300 hover:scale-105" />
           </a>
         </div>
 
