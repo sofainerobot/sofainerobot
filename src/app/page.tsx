@@ -90,14 +90,14 @@ export default function Page() {
       <div className="flex flex-col items-center justify-start w-full px-4 pb-12 z-10 mt-8">
         
         {/* استخدام Next Image لضغط الصورة وتحسين التحميل */}
-        <div className="mb-8 animate-float">
+        <div className="mb-8 animate-float transform-gpu">
           <Image 
             src="/logo.jpg" 
             alt="Logo" 
             width={150} 
             height={150} 
             priority // تحميل سريع للصورة الأولى
-            className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)]" 
+            className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)] transform-gpu" 
           />
         </div>
 
@@ -133,7 +133,7 @@ export default function Page() {
           </a>
         </div>
 
-        <div className="w-full max-w-lg bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-left shadow-lg" dir={t.dir}>
+        <div className="w-full max-w-lg bg-[#0a0a0a]/90 border border-white/10 rounded-2xl p-6 text-left shadow-lg" dir={t.dir}>
           <h2 className="text-xl font-bold text-white mb-6 text-center">{t.offerTitle}</h2>
           <div className="flex flex-col gap-5 text-gray-300 text-sm">
             <div className="flex items-start gap-4">
