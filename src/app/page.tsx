@@ -56,7 +56,6 @@ export default function Page() {
   };
 
   return (
-    {/* تغيير overflow-hidden إلى overflow-x-hidden لمنع قطع القوائم */}
     <main className="min-h-screen flex flex-col items-center relative bg-[#050505] overflow-x-hidden">
       
       {/* الشريط العلوي (Header) */}
@@ -82,7 +81,6 @@ export default function Page() {
           </button>
 
           {isLangOpen && (
-            {/* ضبط اتجاه القائمة ليفتح في الاتجاه الصحيح ويظهر فوق العناصر */}
             <div className="absolute top-full mt-2 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl z-50 ltr:right-0 rtl:left-0">
               <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
               <button onClick={() => changeLang('fr')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'fr' ? 'text-red-500' : 'text-white'}`} dir="ltr">Français</button>
