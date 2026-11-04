@@ -7,7 +7,7 @@ export default function Page() {
         <img src="/logo.jpg" alt="Logo" width={150} height={150} className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.8)] animate-pulse" />
       </div>
 
-      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.9)]">
+      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-white uppercase glow-text-random">
         Sofaine Robot
       </h1>
 
