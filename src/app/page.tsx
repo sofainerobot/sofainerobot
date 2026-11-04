@@ -56,16 +56,17 @@ export default function Page() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center relative bg-[#050505] overflow-hidden">
+    {/* تغيير overflow-hidden إلى overflow-x-hidden لمنع قطع القوائم */}
+    <main className="min-h-screen flex flex-col items-center relative bg-[#050505] overflow-x-hidden">
       
       {/* الشريط العلوي (Header) */}
-      <header className="w-full flex items-center justify-between px-6 py-6 max-w-4xl mx-auto z-50">
-        {/* الأيقونة اليسرى (الكرة الأرضية) */}
+      <header className="w-full flex items-center justify-between px-6 py-6 max-w-4xl mx-auto z-50 relative">
+        {/* الأيقونة (الكرة الأرضية) */}
         <div className="w-12 h-12 rounded-full border border-red-500/50 flex items-center justify-center bg-[#0a0a0a]">
           <Globe className="text-cyan-400 w-6 h-6" />
         </div>
 
-        {/* الاسم الجديد في المنتصف */}
+        {/* الاسم في المنتصف */}
         <div className="text-2xl md:text-3xl font-bold tracking-widest font-[family-name:var(--font-orbitron)]">
           <span className="text-white">CYBER</span>
           <span className="text-red-600">NEXUS</span>
@@ -81,7 +82,8 @@ export default function Page() {
           </button>
 
           {isLangOpen && (
-            <div className="absolute right-0 ltr:right-0 rtl:left-0 mt-4 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl">
+            {/* ضبط اتجاه القائمة ليفتح في الاتجاه الصحيح ويظهر فوق العناصر */}
+            <div className="absolute top-full mt-2 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl z-50 ltr:right-0 rtl:left-0">
               <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
               <button onClick={() => changeLang('fr')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'fr' ? 'text-red-500' : 'text-white'}`} dir="ltr">Français</button>
               <button onClick={() => changeLang('en')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'en' ? 'text-red-500' : 'text-white'}`} dir="ltr">English</button>
