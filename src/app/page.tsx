@@ -106,13 +106,13 @@ export default function Page() {
         </h1>
         <p className="text-sm text-gray-400 text-center mb-8">{t.subtitle}</p>
 
-        <div className="text-center mb-16">
+        <div className="text-center mb-6">
           <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center">
             <img src="/open-bot.png" alt="Open Bot" className="w-48 md:w-56 mx-auto mix-blend-screen animate-hover-glow transition-transform duration-300 hover:scale-105" />
           </a>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-5 max-w-lg mt-8 mb-12">
+        <div className="flex flex-wrap justify-center gap-5 max-w-lg mt-4 mb-12">
           <a href="https://www.instagram.com/sofainerobot" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/5 rounded-full hover:bg-pink-500/20 hover:text-pink-400 transition-all border border-white/10">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
           </a>
