@@ -107,9 +107,8 @@ export default function Page() {
         <p className="text-sm text-gray-400 text-center mb-8">{t.subtitle}</p>
 
         <div className="text-center mb-16">
-          <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 active:bg-blue-600 active:border-blue-500 active:shadow-[0_0_30px_rgba(59,130,246,0.8)] active:scale-95">
-            {t.openChat}
-            <span className="animate-[spin_4s_linear_infinite] text-2xl inline-block">🚀</span>
+          <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center">
+            <img src="https://static.iimg.live/uploads/supreme-masterpiece-8195.png" alt="Open Bot" className="w-full max-w-sm md:max-w-md mx-auto mix-blend-screen animate-hover-glow transition-transform duration-300 hover:scale-105" />
           </a>
         </div>
 
