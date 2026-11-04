@@ -4,11 +4,12 @@ export default function Page() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-start pt-32 pb-12 px-4 bg-[#050505]">
       <div className="mb-8">
-        <img src="/logo.jpg" alt="Logo" width={150} height={150} className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.8)] animate-pulse" />
+        <img src="/logo.jpg" alt="Logo" width={150} height={150} className="rounded-full object-cover mx-auto ring-4 ring-cyan-500 shadow-[0_0_40px_rgba(6,182,212,0.5)]" />
       </div>
 
-      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-white uppercase glow-text-random">
-        Sofaine Robot
+      {/* الاسم المزخرف مع التوهج الناعم */}
+      <h1 className="text-4xl md:text-6xl mb-12 text-center uppercase glow-title">
+        Sofain Robot
       </h1>
 
       <div className="text-center mb-16">
