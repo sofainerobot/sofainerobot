@@ -9,7 +9,7 @@ const translations = {
     dir: 'ltr',
     subtitle: "Your ultimate gateway to elite cybersecurity, next-gen AI, and the hidden web.",
     offerTitle: "Unlock Your Cyber Arsenal",
-    openChat: "Launch Bot",
+    openChat: "Open Bot",
     mainTitle: "SOFAIN ROBOT",
     features: [
       { title: "Exclusive Zero-Day & Git Exploits", desc: "Stay ahead with real-time, exclusive access to the latest vulnerabilities and advanced Git exploits." },
@@ -21,7 +21,7 @@ const translations = {
     dir: 'ltr',
     subtitle: "Votre passerelle ultime vers la cybersécurité d'élite, l'IA de nouvelle génération et le web caché.",
     offerTitle: "Débloquez votre Arsenal Cyber",
-    openChat: "Lancer le Bot",
+    openChat: "Ouvrir le Bot",
     mainTitle: "SOFAIN ROBOT",
     features: [
       { title: "Exploits Zero-Day & Git", desc: "Gardez une longueur d'avance avec un accès exclusif aux dernières vulnérabilités et exploits Git." },
@@ -33,7 +33,7 @@ const translations = {
     dir: 'rtl',
     subtitle: "بوابتك المطلقة للأمن السيبراني، الذكاء الاصطناعي المتقدم، وعالم الويب الخفي.",
     offerTitle: "اكتشف ترسانتك السيبرانية",
-    openChat: "أطلق البوت",
+    openChat: "افتح البوت",
     mainTitle: "سفيان روبوت",
     features: [
       { title: "ثغرات حصرية ومتقدمة", desc: "ابق في الطليعة مع وصول فوري وحصري لأحدث الثغرات وتحديثات Git المتقدمة." },
