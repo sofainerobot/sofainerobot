@@ -61,29 +61,34 @@ export default function Page() {
       {/* الشريط العلوي (Header) */}
       <header className="w-full flex items-center justify-between px-6 py-6 max-w-4xl mx-auto z-50 relative">
         
-        {/* الزر الدائري (الكرة الأرضية) الذي يفتح القائمة */}
-        <div className="relative">
-          <button 
-            onClick={() => setIsLangOpen(!isLangOpen)}
-            className="w-12 h-12 rounded-full border border-red-500/50 flex items-center justify-center bg-[#0a0a0a] hover:bg-[#1a1a1a] transition-colors"
-          >
-            <Globe className="text-cyan-400 w-6 h-6" />
-          </button>
+        {/* تجميع الأيقونة والاسم معاً مع مسافة بينهما */}
+        <div className="flex items-center gap-5 md:gap-6">
+          
+          {/* الزر الدائري (الكرة الأرضية) */}
+          <div className="relative">
+            <button 
+              onClick={() => setIsLangOpen(!isLangOpen)}
+              className="w-12 h-12 rounded-full border border-red-500/50 flex items-center justify-center bg-[#0a0a0a] hover:bg-[#1a1a1a] transition-colors"
+            >
+              <Globe className="text-cyan-400 w-6 h-6" />
+            </button>
 
-          {/* القائمة المنسدلة للغات */}
-          {isLangOpen && (
-            <div className="absolute top-full mt-2 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl z-50 ltr:left-0 rtl:right-0">
-              <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
-              <button onClick={() => changeLang('fr')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'fr' ? 'text-red-500' : 'text-white'}`} dir="ltr">Français</button>
-              <button onClick={() => changeLang('en')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'en' ? 'text-red-500' : 'text-white'}`} dir="ltr">English</button>
-            </div>
-          )}
-        </div>
+            {/* القائمة المنسدلة للغات */}
+            {isLangOpen && (
+              <div className="absolute top-full mt-2 w-40 bg-[#121212] border border-gray-700 rounded-2xl overflow-hidden shadow-2xl z-50 ltr:left-0 rtl:right-0">
+                <button onClick={() => changeLang('ar')} className={`w-full text-right px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'ar' ? 'text-red-500' : 'text-white'}`} dir="rtl">العربية</button>
+                <button onClick={() => changeLang('fr')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'fr' ? 'text-red-500' : 'text-white'}`} dir="ltr">Français</button>
+                <button onClick={() => changeLang('en')} className={`w-full text-left px-5 py-4 hover:bg-white/5 font-bold text-lg ${lang === 'en' ? 'text-red-500' : 'text-white'}`} dir="ltr">English</button>
+              </div>
+            )}
+          </div>
 
-        {/* الاسم في المنتصف */}
-        <div className="text-2xl md:text-3xl font-bold tracking-widest font-[family-name:var(--font-orbitron)]">
-          <span className="text-white">CYBER</span>
-          <span className="text-red-600">NEXUS</span>
+          {/* الاسم */}
+          <div className="text-2xl md:text-3xl font-bold tracking-widest font-[family-name:var(--font-orbitron)]">
+            <span className="text-white">CYBER</span>
+            <span className="text-red-600">NEXUS</span>
+          </div>
+
         </div>
 
         {/* مساحة فارغة لموازنة التصميم */}
@@ -103,7 +108,7 @@ export default function Page() {
           {t.mainTitle}
         </h1>
 
-        {/* زر الدردشة الرئيسي (الرابط الأصلي) */}
+        {/* زر الدردشة الرئيسي */}
         <div className="text-center mb-16">
           <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 active:bg-blue-600 active:border-blue-500 active:shadow-[0_0_30px_rgba(59,130,246,0.8)] active:scale-95">
             {t.openChat}
@@ -119,12 +124,9 @@ export default function Page() {
           <a href="https://www.facebook.com/share/18dstWZPr6/" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-blue-600/20 hover:text-blue-500 transition-all border border-white/10">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
           </a>
-          
-          {/* أيقونة التلغرام (الرابط الجديد) */}
           <a href="https://t.me/sofaineroboot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-sky-500/20 hover:text-sky-400 transition-all border border-white/10">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </a>
-
           <a href="https://www.tiktok.com/@sofaineroboot" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/20 hover:text-white transition-all border border-white/10">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
           </a>
