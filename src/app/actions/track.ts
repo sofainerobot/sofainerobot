@@ -4,8 +4,6 @@ import { headers } from 'next/headers';
 import { after } from 'next/server';
 import { ipAddress, geolocation } from '@vercel/functions';
 
-export const maxDuration = 10;
-
 export async function trackVisitor() {
   'use server';
 

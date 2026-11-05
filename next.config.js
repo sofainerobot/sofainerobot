@@ -8,7 +8,6 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'], // استخدام صيغ صور حديثة وخفيفة
   },
-  swcMinify: true, // ضغط الكود بأقصى سرعة
 
   // ------------------------------------------------------------------
   // Security Headers
