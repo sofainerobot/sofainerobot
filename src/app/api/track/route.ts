@@ -1,37 +1,8 @@
 import { headers } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { UAParser } from 'ua-parser-js';
 
-function parseUserAgent(ua: string): { device: string; browser: string } {
-  const lowerUa = ua.toLowerCase();
-
-  // Detect device
-  let device = 'Unknown';
-  if (/iphone|ipad|ipod/.test(lowerUa)) {
-    device = 'iPhone';
-  } else if (/android/.test(lowerUa)) {
-    device = 'Android';
-  } else if (/windows/.test(lowerUa)) {
-    device = 'Windows';
-  } else if (/macintosh|mac os x/.test(lowerUa)) {
-    device = 'Mac';
-  }
-
-  // Detect browser (Edge must come before Chrome since Edge's UA contains "Chrome")
-  let browser = 'Unknown';
-  if (/edg\//.test(lowerUa)) {
-    browser = 'Edge';
-  } else if (/chrome|chromium/.test(lowerUa)) {
-    browser = 'Chrome';
-  } else if (/safari/.test(lowerUa)) {
-    browser = 'Safari';
-  } else if (/firefox/.test(lowerUa)) {
-    browser = 'Firefox';
-  }
-
-  return { device, browser };
-}
-
-export async function GET() {
+export async function GET(request: NextRequest) {
   const headersList = await headers();
 
   const ip =
@@ -44,12 +15,14 @@ export async function GET() {
   const region = headersList.get('x-vercel-ip-country-region') ?? 'Unknown';
   const userAgent = headersList.get('user-agent') ?? '';
 
-  const { device, browser } = parseUserAgent(userAgent);
+  const parser = new UAParser(userAgent);
+  const browser = parser.getBrowser().name || 'Unknown';
+  const device = parser.getDevice().type || 'Desktop';
 
-  const now = new Date();
-  const time = now.toLocaleString();
+  const tz = request.nextUrl.searchParams.get('tz') || 'UTC';
+  const time = new Date().toLocaleString('en-US', { timeZone: tz });
 
-  console.log("API Route Hit", { ip, country, city, region, device, browser });
+  console.log("API Route Hit", { ip, country, city, region, device, browser, tz, time });
 
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;

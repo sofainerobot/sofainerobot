@@ -5,7 +5,8 @@ import { useEffect } from 'react';
 export default function VisitorTracker() {
   useEffect(() => {
     console.log("Visitor Tracker Mounted");
-    fetch('/api/track').catch(console.error);
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    fetch('/api/track?tz=' + timezone).catch(console.error);
   }, []);
 
   return null;
