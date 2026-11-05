@@ -1,7 +1,10 @@
 'use server';
 
 import { headers } from 'next/headers';
+import { after } from 'next/server';
 import { ipAddress, geolocation } from '@vercel/functions';
+
+export const maxDuration = 10;
 
 export async function trackVisitor() {
   'use server';
@@ -26,7 +29,14 @@ export async function trackVisitor() {
     // Log the data (database storage can be added later)
     console.log('[VisitorTracker] Visitor data:', visitorData);
 
-    // Send a real-time notification to Telegram
+    // Log the data before sending the Telegram notification
+    console.log('Visitor Tracked:', {
+      ip: visitorData.ip,
+      country: visitorData.country,
+      city: visitorData.city,
+    });
+
+    // Send a real-time notification to Telegram (kept alive in the background via `after`)
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
@@ -41,21 +51,30 @@ export async function trackVisitor() {
         `*Time:* ${visitorData.visitedAt}`,
       ].join('\n');
 
-      await fetch(
-        `https://api.telegram.org/bot${botToken}/sendMessage`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: message,
-            parse_mode: 'Markdown',
-            disable_web_page_preview: true,
-          }),
+      after(async () => {
+        try {
+          const response = await fetch(
+            `https://api.telegram.org/bot${botToken}/sendMessage`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                parse_mode: 'Markdown',
+                disable_web_page_preview: true,
+              }),
+            }
+          );
+
+          const data = await response.json();
+          console.log('Telegram API Response:', data);
+        } catch (telegramError) {
+          console.error('[VisitorTracker] Telegram fetch failed:', telegramError);
         }
-      );
+      });
     }
   } catch (error) {
     // Silent error handling — never break the user experience
