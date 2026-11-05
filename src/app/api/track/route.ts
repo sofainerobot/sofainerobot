@@ -28,11 +28,14 @@ export async function GET() {
         }
       );
 
-      console.log("Telegram Response:", await response.json());
+      const data = await response.json();
+      console.log("Telegram Response:", data);
+      return NextResponse.json({ telegramResponse: data });
     } catch (error) {
       console.error('Telegram fetch failed:', error);
+      return NextResponse.json({ error: error instanceof Error ? error.message : String(error) });
     }
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ error: "Missing variables", token: !botToken, chatId: !!chatId });
 }
