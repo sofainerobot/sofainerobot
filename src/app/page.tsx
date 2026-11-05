@@ -63,6 +63,7 @@ export default function Page() {
   return (
     <main className="min-h-screen flex flex-col items-center relative bg-[#050505] overflow-x-hidden">
       
+      <VisitorTracker />
       <header className="w-full flex items-center justify-between px-6 py-6 max-w-4xl mx-auto z-50 relative">
         <div className="flex items-center gap-5 md:gap-6">
           <div className="relative">
@@ -152,8 +153,6 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Visitor tracking (invisible, runs on mount) */}
-        <VisitorTracker />
       </div>
     </main>
   );
