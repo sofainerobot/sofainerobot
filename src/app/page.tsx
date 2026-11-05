@@ -107,8 +107,8 @@ export default function Page() {
         <p className="text-sm text-gray-400 text-center mb-8">{t.subtitle}</p>
 
         <div className="text-center mb-6">
-          <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center">
-            <img src="/open-bot.png" alt="Open Bot" className="w-48 md:w-56 mx-auto mix-blend-screen animate-hover-glow transition-transform duration-300 hover:scale-105" />
+          <a href="https://t.me/sofainerobot" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center bg-transparent">
+            <img src="/open-bot.png" alt="Open Bot" loading="eager" fetchPriority="high" className="w-64 md:w-80 h-auto mx-auto mix-blend-screen animate-hover-glow transition-transform duration-300 hover:scale-105" />
           </a>
         </div>
 
