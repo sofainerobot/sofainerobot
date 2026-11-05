@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@vercel/functions": "^3.10.6",
     "clsx": "^2.1.0",
     "lowdb": "^6.1.1",
     "lucide-react": "^0.358.0",

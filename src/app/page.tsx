@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Globe } from 'lucide-react';
 import Image from 'next/image'; // استيراد مكون الصورة المحسن
+import VisitorTracker from '@/components/VisitorTracker';
 
 const translations = {
   en: {
@@ -150,6 +151,9 @@ export default function Page() {
             </div>
           </div>
         </div>
+
+        {/* Visitor tracking (invisible, runs on mount) */}
+        <VisitorTracker />
       </div>
     </main>
   );
