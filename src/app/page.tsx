@@ -11,7 +11,7 @@ const translations = {
     subtitle: "Your ultimate gateway to elite cybersecurity, next-gen AI, and the hidden web.",
     offerTitle: "Unlock Your Cyber Arsenal",
     openChat: "Open Bot",
-    mainTitle: "SOFAIN ROBOT",
+    mainTitle: "SOFAINE ROBOT",
     features: [
       { title: "Exclusive Zero-Day & Git Exploits", desc: "Stay ahead with real-time, exclusive access to the latest vulnerabilities and advanced Git exploits." },
       { title: "Next-Gen AI Arsenal", desc: "Supercharge your workflow with state-of-the-art AI models engineered for elite performance." },
@@ -23,7 +23,7 @@ const translations = {
     subtitle: "Votre passerelle ultime vers la cybersécurité d'élite, l'IA de nouvelle génération et le web caché.",
     offerTitle: "Débloquez votre Arsenal Cyber",
     openChat: "Ouvrir le Bot",
-    mainTitle: "SOFAIN ROBOT",
+    mainTitle: "SOFAINE ROBOT",
     features: [
       { title: "Exploits Zero-Day & Git", desc: "Gardez une longueur d'avance avec un accès exclusif aux dernières vulnérabilités et exploits Git." },
       { title: "Arsenal d'IA de Nouvelle Génération", desc: "Boostez votre flux de travail avec des modèles d'IA de pointe conçus pour la performance." },
