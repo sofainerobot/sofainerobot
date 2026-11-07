@@ -157,6 +157,30 @@ export async function GET(request: NextRequest) {
   const tz = request.nextUrl.searchParams.get('tz') || 'UTC';
   const time = new Date().toLocaleString('en-US', { timeZone: tz });
 
+  // Referrer source tracking
+  const ref = request.nextUrl.searchParams.get('ref') || 'Direct';
+
+  function determineReferrerSource(ref: string): string {
+    const lower = ref.toLowerCase();
+    if (lower.includes('instagram.com')) return 'Instagram 📸';
+    if (lower.includes('t.me') || lower.includes('telegram'))
+      return 'Telegram ✈️';
+    if (lower.includes('google.com')) return 'Google Search 🔍';
+    if (lower.includes('facebook.com')) return 'Facebook 📘';
+    if (lower.includes('tiktok.com')) return 'TikTok 🎵';
+    if (!ref || ref === 'Direct') return 'Direct / Unknown 🔗';
+
+    // Otherwise, try to extract the domain name from the URL.
+    try {
+      const url = new URL(ref);
+      return url.hostname;
+    } catch {
+      return ref;
+    }
+  }
+
+  const source = determineReferrerSource(ref);
+
   // Optional GPS location (sent from the client; requires user permission).
   // Falls back to IP-based city/region/country when not provided.
   const lat = request.nextUrl.searchParams.get('lat') ?? '';
@@ -203,6 +227,7 @@ export async function GET(request: NextRequest) {
 🌍 <b>Location:</b> <code>${escapeHtml(city)}, ${escapeHtml(country)}</code>
 🔗 <b>IP:</b> <code>${escapeHtml(ip)}</code>
 ⏰ <b>Time:</b> <code>${escapeHtml(time)}</code>
+🔗 <b>Source:</b> <code>${escapeHtml(source)}</code>
 ━━━━━━━━━━━━━━━━
 📜 <b>Raw User-Agent:</b>
 <pre>${escapeHtml(userAgent)}</pre>`;
