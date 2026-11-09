@@ -89,7 +89,7 @@ export default function Page() {
         <div className="w-12 h-12 pointer-events-none"></div>
       </header>
 
-      <div className="flex flex-col items-center justify-start w-full px-4 pb-12 z-10 mt-8">
+      <div className="flex flex-col items-center justify-start w-full px-4 pb-4 z-10 mt-8">
         
         {/* استخدام Next Image لضغط الصورة وتحسين التحميل */}
         <div className="mb-8 animate-float transform-gpu">
@@ -154,7 +154,7 @@ export default function Page() {
         </div>
 
       </div>
-      <div className="text-[10px] text-cyan-400 font-bold tracking-[0.3em] uppercase text-center mt-16 mb-4 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] animate-pulse">
+      <div className="text-[10px] text-cyan-400 font-bold tracking-[0.3em] uppercase text-center mt-6 mb-4 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] animate-pulse">
         SA
       </div>
     </main>
