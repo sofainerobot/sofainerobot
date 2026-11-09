@@ -154,6 +154,9 @@ export default function Page() {
         </div>
 
       </div>
+      <div className="text-[10px] text-cyan-400 font-bold tracking-[0.3em] uppercase text-center mt-16 mb-4 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] animate-pulse">
+        SA
+      </div>
     </main>
   );
 }
