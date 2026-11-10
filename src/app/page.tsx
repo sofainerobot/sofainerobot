@@ -154,13 +154,6 @@ export default function Page() {
         </div>
 
       </div>
-      <Image
-        src="/sa-logo.png"
-        alt="SA Logo"
-        width={60}
-        height={30}
-        className="mx-auto mt-2 w-16 h-auto drop-shadow-[0_0_12px_rgba(6,182,212,0.8)] animate-pulse"
-      />
     </main>
   );
 }
