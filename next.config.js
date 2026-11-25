@@ -1,16 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  poweredByHeader: false, // إزالة هيدر X-Powered-By لتوفير بايتات
+  poweredByHeader: false, // Remove X-Powered-By header
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production', // إزالة رسائل الكونسول في النسخة النهائية
+    removeConsole: process.env.NODE_ENV === 'production', // Remove console logs in production
   },
   images: {
-    formats: ['image/avif', 'image/webp'], // استخدام صيغ صور حديثة وخفيفة
+    formats: ['image/avif', 'image/webp'],
   },
 
   // ------------------------------------------------------------------
-  // Security Headers
+  // Security Headers (applied by Next.js for all routes).
+  //
+  // NOTE: Content-Security-Policy is intentionally NOT set here. It is
+  // generated PER-REQUEST by middleware.ts (nonce-based, strict-dynamic)
+  // so that each page load gets a unique nonce. Setting a static CSP here
+  // as well would cause browsers to INTERSECT the two policies and break
+  // the nonce-based delivery.
   // ------------------------------------------------------------------
   async headers() {
     return [
@@ -27,7 +33,8 @@ const nextConfig = {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
-          // Strict transport security (HTTPS only)
+          // Strict transport security (HTTPS only; browsers honor it only
+          // over secure connections, so it is safe to emit unconditionally).
           {
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
@@ -36,21 +43,6 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
-          },
-          // Content Security Policy
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: https: blob:",
-              "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://api.telegram.org https://www.googletagmanager.com https://www.google-analytics.com",
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-            ].join('; '),
           },
           // Permissions / Feature Policy
           {

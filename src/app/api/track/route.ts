@@ -1,108 +1,50 @@
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { UAParser } from 'ua-parser-js';
+import { Redis } from '@upstash/redis';
+import { Ratelimit } from '@upstash/ratelimit';
+import {
+  TrackQuerySchema,
+  RATE_LIMITS,
+  checkRateLimit,
+  escapeHtml,
+  extractIp,
+  isSuspiciousUserAgent,
+  rateLimitResponse,
+  TRUSTED_ORIGINS,
+  validateCSRF,
+} from '@/lib/api-track';
 
-/* Escape HTML special characters in user-controlled values so they
-   don't break Telegram's HTML parse_mode. */
-function escapeHtml(text: string): string {
-  return text.replace(/[&<>"']/g, (c) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  }[c] as string));
-}
+/* ------------------------------------------------------------------ */
+/* Upstash Redis rate limiter (POST): max 5 requests per minute per IP */
+/* ------------------------------------------------------------------ */
+const trackRateLimitRedis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
 
-/* -------------------------------------------------------------------------- */
-/* Rate limiting (in-memory, per IP)                                          */
-/* -------------------------------------------------------------------------- */
-/* Note: Vercel serverless functions may reset this Map on cold starts /      */
-/* region changes, so this stops basic spam but is not a substitute for       */
-/* a distributed rate limiter (Redis, Upstash, Vercel KV, etc.) in production. */
-interface RateLimitEntry {
-  count: number;
-  windowStart: number;
-}
+const trackRateLimit = new Ratelimit({
+  redis: trackRateLimitRedis,
+  limiter: Ratelimit.slidingWindow(5, '60 s'),
+});
 
-const rateLimitMap = new Map<string, RateLimitEntry>();
-const RATE_LIMIT_MAX_REQUESTS = 3;
-const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
-
-function extractIp(headersList: Headers): string {
-  const forwarded = headersList.get('x-forwarded-for');
-  if (forwarded) {
-    // x-forwarded-for may be a comma-separated list; use the left-most (client) IP.
-    return forwarded.split(',')[0].trim() || 'Unknown';
-  }
-  return (
-    headersList.get('x-real-ip') ?? headersList.get('x-vercel-ip') ?? 'Unknown'
+/* Reads a single cookie value from the raw Cookie header. */
+function getCookie(cookieHeader: string | null, name: string): string | undefined {
+  if (!cookieHeader) return undefined;
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = cookieHeader.match(
+    new RegExp(`(?:^|;\\s*)${escapedName}=([^;]*)`),
   );
+  return match ? match[1] : undefined;
 }
 
-function checkRateLimit(ip: string): {
-  allowed: boolean;
-  remaining: number;
-  resetTime: number;
-} {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  // Start a new window if there is no entry or the current window expired.
-  if (!entry || now >= entry.windowStart + RATE_LIMIT_WINDOW_MS) {
-    rateLimitMap.set(ip, { count: 1, windowStart: now });
-    return {
-      allowed: true,
-      remaining: RATE_LIMIT_MAX_REQUESTS - 1,
-      resetTime: now + RATE_LIMIT_WINDOW_MS,
-    };
-  }
-
-  entry.count += 1;
-  return {
-    allowed: entry.count <= RATE_LIMIT_MAX_REQUESTS,
-    remaining: Math.max(0, RATE_LIMIT_MAX_REQUESTS - entry.count),
-    resetTime: entry.windowStart + RATE_LIMIT_WINDOW_MS,
-  };
-}
-
-/* -------------------------------------------------------------------------- */
-/* User-Agent validation                                                      */
-/* -------------------------------------------------------------------------- */
-const BOT_USER_AGENT_PATTERNS = [
-  /curl/i,
-  /wget/i,
-  /python-requests/i,
-  /python-urllib/i,
-  /http\.client/i,
-  /axios/i,
-  /node-fetch/i,
-  /got/i,
-  /bot/i,
-  /crawler/i,
-  /spider/i,
-  /slurp/i,
-  /headless/i,
-  /phantom/i,
-  /puppeteer/i,
-  /playwright/i,
-  /selenium/i,
-];
-
-function isSuspiciousUserAgent(userAgent: string): boolean {
-  if (!userAgent || userAgent.trim().length === 0) {
-    // Empty user-agent is a strong signal of a script/bot.
-    return true;
-  }
-  return BOT_USER_AGENT_PATTERNS.some((pattern) => pattern.test(userAgent));
-}
-
+/* ------------------------------------------------------------------ */
+/* GET — visitor tracking beacon                                      */
+/* ------------------------------------------------------------------ */
 export async function GET(request: NextRequest) {
   const headersList = await headers();
 
-  // ------------------------------------------------------------------
-  // 1. User-Agent validation — reject obvious bots/scripts immediately.
-  // ------------------------------------------------------------------
+  // 1. User-Agent validation — reject obvious bots/scripts.
   const userAgent = headersList.get('user-agent') ?? '';
   if (isSuspiciousUserAgent(userAgent)) {
     return NextResponse.json(
@@ -111,39 +53,33 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // ------------------------------------------------------------------
-  // 2. Rate limiting — max 3 requests per IP per 1 minute.
-  // ------------------------------------------------------------------
+  // 2. Rate limiting — per IP.
   const ip = extractIp(headersList);
-  const rateLimit = checkRateLimit(ip);
-
+  const { max: getMax, windowMs: getWindow } = RATE_LIMITS.GET;
+  const rateLimit = checkRateLimit(ip, getMax, getWindow);
   if (!rateLimit.allowed) {
-    const retryAfterSeconds = Math.ceil(
-      (rateLimit.resetTime - Date.now()) / 1000,
-    );
+    return rateLimitResponse({ ...rateLimit, max: getMax });
+  }
+
+  // 3. Input validation — query parameters via zod. Reject anything that
+  //    doesn't match the schema.
+  const query = Object.fromEntries(request.nextUrl.searchParams.entries());
+  const parsedQuery = TrackQuerySchema.safeParse(query);
+  if (!parsedQuery.success) {
     return NextResponse.json(
       {
-        error: 'Too many requests',
-        message: `Rate limit exceeded. Maximum ${RATE_LIMIT_MAX_REQUESTS} requests per minute.`,
-        remaining: 0,
-        resetInSeconds: retryAfterSeconds > 0 ? retryAfterSeconds : 0,
+        error: 'Invalid query parameters',
+        details: parsedQuery.error.flatten(),
       },
-      {
-        status: 429,
-        headers: {
-          'Retry-After': String(Math.max(1, retryAfterSeconds)),
-          'X-RateLimit-Limit': String(RATE_LIMIT_MAX_REQUESTS),
-          'X-RateLimit-Remaining': String(rateLimit.remaining),
-          'X-RateLimit-Reset': String(Math.ceil(rateLimit.resetTime / 1000)),
-        },
-      },
+      { status: 400 },
     );
   }
+
+  const { tz, ref, lat, lon } = parsedQuery.data;
 
   const country = headersList.get('x-vercel-ip-country') ?? 'Unknown';
   const city = headersList.get('x-vercel-ip-city') ?? 'Unknown';
   const region = headersList.get('x-vercel-ip-country-region') ?? 'Unknown';
-  const acceptLanguage = headersList.get('accept-language') ?? 'Unknown';
 
   const parser = new UAParser(userAgent);
   const browser = parser.getBrowser().name || 'Unknown';
@@ -154,11 +90,7 @@ export async function GET(request: NextRequest) {
   const os = parser.getOS().name || 'Unknown';
   const osVersion = parser.getOS().version || '';
 
-  const tz = request.nextUrl.searchParams.get('tz') || 'UTC';
   const time = new Date().toLocaleString('en-US', { timeZone: tz });
-
-  // Referrer source tracking
-  const ref = request.nextUrl.searchParams.get('ref') || 'Direct';
 
   function determineReferrerSource(ref: string): string {
     const lower = ref.toLowerCase();
@@ -169,11 +101,8 @@ export async function GET(request: NextRequest) {
     if (lower.includes('facebook.com')) return 'Facebook 📘';
     if (lower.includes('tiktok.com')) return 'TikTok 🎵';
     if (!ref || ref === 'Direct') return 'Direct / Unknown 🔗';
-
-    // Otherwise, try to extract the domain name from the URL.
     try {
-      const url = new URL(ref);
-      return url.hostname;
+      return new URL(ref).hostname;
     } catch {
       return ref;
     }
@@ -181,13 +110,8 @@ export async function GET(request: NextRequest) {
 
   const source = determineReferrerSource(ref);
 
-  // Optional GPS location (sent from the client; requires user permission).
-  // Falls back to IP-based city/region/country when not provided.
-  const lat = request.nextUrl.searchParams.get('lat') ?? '';
-  const lon = request.nextUrl.searchParams.get('lon') ?? '';
-
   const gpsLink = lat && lon
-    ? `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`
+    ? `https://www.google.com/maps/search/?api=1&query=${escapeHtml(lat)},${escapeHtml(lon)}`
     : null;
 
   const locationLabel = gpsLink
@@ -224,7 +148,7 @@ export async function GET(request: NextRequest) {
 ━━━━━━━━━━━━━━━━
 📱 <b>Phone:</b> <code>${escapeHtml(deviceLabel)}</code>
 🤖 <b>OS:</b> <code>${escapeHtml(osLabel)}</code>
-🌍 <b>Location:</b> <code>${escapeHtml(city)}, ${escapeHtml(country)}</code>
+🌍 <b>Location:</b> <code>${escapeHtml(locationLabel)}</code>
 🔗 <b>IP:</b> <code>${escapeHtml(ip)}</code>
 ⏰ <b>Time:</b> <code>${escapeHtml(time)}</code>
 🔗 <b>Source:</b> <code>${escapeHtml(source)}</code>
@@ -236,9 +160,7 @@ export async function GET(request: NextRequest) {
         `https://api.telegram.org/bot${botToken}/sendMessage`,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             chat_id: chatId,
             text,
@@ -250,12 +172,93 @@ export async function GET(request: NextRequest) {
 
       const data = await response.json();
       console.log("Telegram Response:", data);
-      return NextResponse.json({ telegramResponse: data });
+      return NextResponse.json({ ok: true, telegramResponse: data });
     } catch (error) {
       console.error('Telegram fetch failed:', error);
-      return NextResponse.json({ error: error instanceof Error ? error.message : String(error) });
+      return NextResponse.json(
+        {
+          error: error instanceof Error ? error.message : String(error),
+        },
+        { status: 502 },
+      );
     }
   }
 
-  return NextResponse.json({ error: "Missing variables", token: !!botToken, chatId: !!chatId });
+  return NextResponse.json(
+    { error: "Missing variables", token: !!botToken, chatId: !!chatId },
+    { status: 500 },
+  );
 }
+
+/* ------------------------------------------------------------------ */
+/* POST — tracked event                                               */
+/*   a) Origin header must match TRUSTED_ORIGINS (else 403)           */
+/*   b) CSRF double-submit: csrf-token cookie === X-CSRF-Token header */
+/*       (missing or mismatched = 403)                                */
+/*   c) Upstash Redis rate limit: max 5 requests per minute per IP    */
+/*       (exceeded = 429)                                             */
+/*   d) Valid requests return 204                                     */
+/* ------------------------------------------------------------------ */
+export async function POST(request: NextRequest) {
+  const headersList = await headers();
+
+  // a) Origin header must match TRUSTED_ORIGINS.
+  const origin = headersList.get('origin');
+  if (!origin || !TRUSTED_ORIGINS.includes(origin)) {
+    return new NextResponse(null, { status: 403 });
+  }
+
+  // b) CSRF double-submit: csrf-token cookie must equal X-CSRF-Token header.
+  const tokenFromCookie = getCookie(headersList.get('cookie'), 'csrf-token');
+  const tokenFromHeader = headersList.get('x-csrf-token');
+  if (!tokenFromCookie || !tokenFromHeader || tokenFromCookie !== tokenFromHeader) {
+    return new NextResponse(null, { status: 403 });
+  }
+
+  // c) Rate limit via Upstash Redis — max 5 requests per minute per IP.
+  const ip = extractIp(headersList);
+  const { success } = await trackRateLimit.limit(ip);
+  if (!success) {
+    return new NextResponse(null, { status: 429 });
+  }
+
+  // d) Valid request.
+  return new NextResponse(null, { status: 204 });
+}
+
+/* ------------------------------------------------------------------ */
+/* PUT / DELETE — state-changing (CSRF + rate limit, not implemented) */
+/* ------------------------------------------------------------------ */
+
+async function handleStateChanging(request: NextRequest) {
+  const headersList = await headers();
+
+  const userAgent = headersList.get('user-agent') ?? '';
+  if (isSuspiciousUserAgent(userAgent)) {
+    return NextResponse.json(
+      { error: 'Forbidden: invalid or missing user-agent' },
+      { status: 403 },
+    );
+  }
+
+  const ip = extractIp(headersList);
+  const method = request.method as keyof typeof RATE_LIMITS;
+  const { max, windowMs } = RATE_LIMITS[method ?? 'PUT'];
+  const rateLimit = checkRateLimit(ip, max, windowMs);
+  if (!rateLimit.allowed) {
+    return rateLimitResponse({ ...rateLimit, max });
+  }
+
+  const csrf = validateCSRF(request);
+  if (!csrf.allowed) {
+    return NextResponse.json(
+      { error: 'CSRF validation failed', reason: csrf.reason },
+      { status: 403 },
+    );
+  }
+
+  return NextResponse.json({ error: 'Method not implemented' }, { status: 501 });
+}
+
+export const PUT = handleStateChanging;
+export const DELETE = handleStateChanging;
